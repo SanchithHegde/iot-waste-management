@@ -1,0 +1,2 @@
+[target.arm-unknown-linux-gnueabihf]
+image = "docker.io/rustembedded/cross:arm-unknown-linux-gnueabihf-0.2.1"
