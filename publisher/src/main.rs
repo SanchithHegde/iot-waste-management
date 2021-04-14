@@ -1,6 +1,6 @@
 use std::time::{Duration, SystemTime};
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use rppal::gpio::{Gpio, InputPin, OutputPin};
 use rppal::system::DeviceInfo;
 
@@ -12,17 +12,29 @@ const GPIO_ECHO: u8 = 24;
 
 fn main() -> Result<()> {
     // Print device information
-    println!("Device: {}", DeviceInfo::new()?.model());
+    println!(
+        "Device: {}",
+        DeviceInfo::new()
+            .with_context(|| "Failed to obtain device information")?
+            .model()
+    );
 
     // Acquire access to the Pi's GPIO peripherals
-    let gpio = Gpio::new()?;
+    let gpio = Gpio::new().with_context(|| "Failed to obtain GPIO peripherals")?;
 
     // Setup the `GPIO_TRIGGER` and `GPIO_ECHO` pins as output and input pins, respectively
-    let mut trigger_pin = gpio.get(GPIO_TRIGGER)?.into_output();
-    let mut echo_pin = gpio.get(GPIO_ECHO)?.into_input();
+    let mut trigger_pin = gpio
+        .get(GPIO_TRIGGER)
+        .with_context(|| format!("Failed to get GPIO pin {}", GPIO_TRIGGER))?
+        .into_output();
+    let mut echo_pin = gpio
+        .get(GPIO_ECHO)
+        .with_context(|| format!("Failed to get GPIO pin {}", GPIO_ECHO))?
+        .into_input();
 
     loop {
-        let distance = distance(&mut trigger_pin, &mut echo_pin)?;
+        let distance =
+            distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
 
         println!("Measured distance: {:.1} cm", distance);
         std::thread::sleep(Duration::from_secs(1));
