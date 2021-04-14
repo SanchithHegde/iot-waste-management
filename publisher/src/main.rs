@@ -17,7 +17,6 @@ fn main() -> Result<()> {
     let terminate = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate))?;
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate))?;
-    signal_hook::flag::register(signal_hook::consts::SIGKILL, Arc::clone(&terminate))?;
 
     // Print device information
     println!(
