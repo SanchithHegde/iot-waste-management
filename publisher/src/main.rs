@@ -1,3 +1,5 @@
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 
 use anyhow::{Context, Result};
@@ -11,6 +13,12 @@ const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
 fn main() -> Result<()> {
+    // Register signal handlers
+    let terminate = Arc::new(AtomicBool::new(false));
+    signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate))?;
+    signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate))?;
+    signal_hook::flag::register(signal_hook::consts::SIGKILL, Arc::clone(&terminate))?;
+
     // Print device information
     println!(
         "Device: {}",
@@ -32,7 +40,7 @@ fn main() -> Result<()> {
         .with_context(|| format!("Failed to get GPIO pin {}", GPIO_ECHO))?
         .into_input();
 
-    loop {
+    while !terminate.load(Ordering::Relaxed) {
         let distance =
             distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
 
