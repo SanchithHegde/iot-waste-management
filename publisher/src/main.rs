@@ -1,3 +1,6 @@
+mod config;
+
+use std::fs::File;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::time::{Duration, SystemTime};
@@ -13,10 +16,18 @@ const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
 fn main() -> Result<()> {
+    use std::io::Read;
+
     // Register signal handlers
     let terminate = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate))?;
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate))?;
+
+    // Read config from file
+    let mut config = String::new();
+    File::open("config.toml")?.read_to_string(&mut config)?;
+    let config: config::Config = toml::from_str(&config)?;
+    println!("{:?}", &config);
 
     // Print device information
     println!(
