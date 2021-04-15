@@ -1,0 +1,9 @@
+threshold_distance = 10
+
+[machine]
+id       = "123456789"
+location = "Mysuru"
+
+[mqtt]
+broker_url = "mqtt://"
+topic      = ""
