@@ -26,12 +26,14 @@ fn main() -> Result<()> {
         DeviceInfo::new().with_context(|| "Failed to obtain device information")?
     );
 
-    // Read config from file
+    // Build path to configuration file
     let project_dir = directories::ProjectDirs::from("", "", "IoT-Waste-Management");
     if project_dir.is_none() {
         anyhow::bail!("Failed to obtain configuration directory path from operating system");
     }
     let config_file = project_dir.unwrap().config_dir().join("config.toml");
+
+    // Read config from file
     let config = std::fs::read_to_string(&config_file).with_context(|| {
         format!(
             r#"Failed to read configuration file: "{}""#,
