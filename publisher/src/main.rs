@@ -5,6 +5,7 @@ use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 
 use anyhow::{Context, Result};
+use log::{debug, info, trace};
 use rppal::gpio::{Gpio, InputPin, OutputPin};
 use rppal::system::DeviceInfo;
 
@@ -15,15 +16,21 @@ const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
 fn main() -> Result<()> {
+    // Initialize timed logger
+    pretty_env_logger::init_timed();
+
     // Register signal handlers
     let terminate = Arc::new(AtomicBool::new(false));
     signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate))?;
     signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate))?;
+    trace!("Registered signal handlers");
 
     // Print device information
-    println!(
-        "Device information: {:#?}",
-        DeviceInfo::new().with_context(|| "Failed to obtain device information")?
+    info!(
+        "Device: {}",
+        DeviceInfo::new()
+            .with_context(|| "Failed to obtain device information")?
+            .model()
     );
 
     // Build path to configuration file
@@ -41,26 +48,34 @@ fn main() -> Result<()> {
         )
     })?;
     let config: config::Config = toml::from_str(&config)?;
-    println!("{:?}", &config);
+    trace!(
+        r#"Read config {:?} from file "{}""#,
+        &config,
+        &config_file.display()
+    );
 
     // Acquire access to the Pi's GPIO peripherals
     let gpio = Gpio::new().with_context(|| "Failed to obtain GPIO peripherals")?;
+    trace!("Acquired access to GPIO peripherals");
 
     // Setup the `GPIO_TRIGGER` and `GPIO_ECHO` pins as output and input pins, respectively
     let mut trigger_pin = gpio
         .get(GPIO_TRIGGER)
         .with_context(|| format!("Failed to get GPIO pin {}", GPIO_TRIGGER))?
         .into_output();
+    trace!("Setup pin {} as output pin", GPIO_TRIGGER);
+
     let mut echo_pin = gpio
         .get(GPIO_ECHO)
         .with_context(|| format!("Failed to get GPIO pin {}", GPIO_ECHO))?
         .into_input();
+    trace!("Setup pin {} as input pin", GPIO_ECHO);
 
     while !terminate.load(Ordering::Relaxed) {
         let distance =
             distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
 
-        println!("Measured distance: {:.1} cm", distance);
+        debug!("Measured distance: {:.1} cm", distance);
         std::thread::sleep(Duration::from_secs(config.delay));
     }
 
@@ -90,6 +105,12 @@ fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64>
 
     // Duration between start and arrival
     let elapsed_time = end_time.duration_since(start_time)?;
+    trace!(
+        "Start time: {:?}, end time: {:?}, elapsed time: {:?}",
+        start_time,
+        end_time,
+        elapsed_time
+    );
 
     // Multiply with sonic speed (34300 cm/s) and then divide by 2, as the wave hits and returns
     // back.
