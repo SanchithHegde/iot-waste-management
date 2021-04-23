@@ -61,7 +61,7 @@ fn main() -> Result<()> {
             distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
 
         println!("Measured distance: {:.1} cm", distance);
-        std::thread::sleep(Duration::from_secs(1));
+        std::thread::sleep(Duration::from_secs(config.delay));
     }
 
     Ok(())

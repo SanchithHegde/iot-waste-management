@@ -1,4 +1,5 @@
 threshold_distance = 10
+delay              = 2
 
 [machine]
 id       = "123456789"
