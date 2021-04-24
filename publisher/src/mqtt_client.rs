@@ -30,18 +30,18 @@ pub(crate) async fn publish_message(
         )
         .finalize();
 
+    // Build message
+    let mqtt_message = mqtt::MessageBuilder::new()
+        .topic(&config.mqtt.topic)
+        .payload(message.as_bytes())
+        .qos(config.mqtt.qos as i32)
+        .retained(true)
+        .finalize();
+
     let handle: tokio::task::JoinHandle<Result<(), mqtt::Error>> = tokio::task::spawn(async move {
         // Connect to client using connect options
         client.connect(connect_opts).await?;
         trace!("Connected to MQTT broker");
-
-        // Build message
-        let mqtt_message = mqtt::MessageBuilder::new()
-            .topic(&config.mqtt.topic)
-            .payload(message.as_bytes())
-            .qos(config.mqtt.qos as i32)
-            .retained(true)
-            .finalize();
 
         // Publish message under topic
         client.publish(mqtt_message).await?;
