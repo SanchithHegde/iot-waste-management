@@ -8,17 +8,15 @@ pub(crate) async fn publish_message(
     message: String,
     config: Arc<crate::config::Config>,
 ) -> Result<()> {
-    // Read broker address from config
-    let broker_address = &config.mqtt.broker_url;
-
     // Build async MQTT client
     let client = mqtt::CreateOptionsBuilder::new()
-        .server_uri(broker_address)
+        .server_uri(&config.mqtt.broker_url)
         .client_id(&config.machine.id)
         .max_buffered_messages(config.mqtt.buffer_size as i32)
         .mqtt_version(mqtt::MQTT_VERSION_5)
         .delete_oldest_messages(true)
-        .create_client()?;
+        .create_client()
+        .with_context(|| "Failed to create MQTT client")?;
 
     // Build connect options
     let mut connect_opts_builder = mqtt::ConnectOptionsBuilder::new();
@@ -30,6 +28,7 @@ pub(crate) async fn publish_message(
             Duration::from_secs(config.mqtt.max_retry_interval),
         );
 
+    // Include SSL options in connect options if available in config
     if let Some(ssl) = &config.mqtt.ssl {
         // Performing check for the files' existence manually because paho-mqtt doesn't check and
         // passes filenames directly to the C library during connection
@@ -60,9 +59,12 @@ pub(crate) async fn publish_message(
 
         // Build SSL options
         let ssl_opts = mqtt::SslOptionsBuilder::new()
-            .trust_store(&ssl.ca_certs)?
-            .key_store(&ssl.client_certs)?
-            .private_key(&ssl.client_key)?
+            .trust_store(&ssl.ca_certs)
+            .with_context(|| "Failed to set CA certificates option")?
+            .key_store(&ssl.client_certs)
+            .with_context(|| "Failed to set client certificates option")?
+            .private_key(&ssl.client_key)
+            .with_context(|| "Failed to set client private key option")?
             .enable_server_cert_auth(true)
             .verify(true)
             .finalize();
@@ -80,20 +82,35 @@ pub(crate) async fn publish_message(
         .retained(true)
         .finalize();
 
-    let handle: tokio::task::JoinHandle<Result<(), mqtt::Error>> = tokio::task::spawn(async move {
+    let handle: tokio::task::JoinHandle<Result<()>> = tokio::task::spawn(async move {
         // Connect to client using connect options
-        client.connect(connect_opts).await?;
+        client.connect(connect_opts).await.with_context(|| {
+            format!(
+                r#"Failed to establish connection with MQTT broker with address "{}""#,
+                &config.mqtt.broker_url
+            )
+        })?;
         trace!("Connected to MQTT broker");
 
         // Publish message under topic
-        client.publish(mqtt_message).await?;
+        client.publish(mqtt_message).await.with_context(|| {
+            format!(
+                r#"Failed to publish message "{}" under topic "{}""#,
+                &message, config.mqtt.topic
+            )
+        })?;
         debug!(
             r#"Published message "{}" under topic "{}""#,
             &message, config.mqtt.topic
         );
 
         // Disconnect from broker
-        client.disconnect(None).await?;
+        client.disconnect(None).await.with_context(|| {
+            format!(
+                r#"Failed to disconnect from MQTT broker with address "{}""#,
+                &config.mqtt.broker_url
+            )
+        })?;
         trace!("Disconnected from MQTT broker");
 
         Ok(())
