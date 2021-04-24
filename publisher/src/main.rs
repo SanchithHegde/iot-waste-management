@@ -10,7 +10,7 @@ use std::{
 };
 
 use anyhow::{Context, Result};
-use log::{debug, info, trace};
+use log::{debug, error, info, trace};
 use rppal::gpio::{Gpio, InputPin, OutputPin};
 use rppal::system::DeviceInfo;
 
@@ -20,8 +20,44 @@ const SONIC_SPEED: f64 = 34300_f64;
 const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
-#[tokio::main]
-async fn main() -> Result<()> {
+fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
+    // Set `GPIO_TRIGGER` to HIGH
+    trigger_pin.set_high();
+
+    // Set `GPIO_TRIGGER` to LOW after a delay of 10 microseconds
+    std::thread::sleep(Duration::from_micros(10));
+    trigger_pin.set_low();
+
+    let mut start_time = SystemTime::now();
+    let mut end_time = SystemTime::now();
+
+    // Save start_time
+    while echo_pin.is_low() {
+        start_time = SystemTime::now();
+    }
+
+    // Save arrival_time
+    while echo_pin.is_high() {
+        end_time = SystemTime::now();
+    }
+
+    // Duration between start and arrival
+    let elapsed_time = end_time.duration_since(start_time)?;
+    trace!(
+        "Start time: {:?}, end time: {:?}, elapsed time: {:?}",
+        start_time,
+        end_time,
+        elapsed_time
+    );
+
+    // Multiply with sonic speed (34300 cm/s) and then divide by 2, as the wave hits and returns
+    // back.
+    let distance = (elapsed_time.as_secs_f64() * SONIC_SPEED) / 2_f64;
+
+    Ok(distance)
+}
+
+async fn run() -> Result<()> {
     // Initialize timed logger
     pretty_env_logger::init_timed();
 
@@ -92,39 +128,12 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
-    // Set `GPIO_TRIGGER` to HIGH
-    trigger_pin.set_high();
-
-    // Set `GPIO_TRIGGER` to LOW after a delay of 10 microseconds
-    std::thread::sleep(Duration::from_micros(10));
-    trigger_pin.set_low();
-
-    let mut start_time = SystemTime::now();
-    let mut end_time = SystemTime::now();
-
-    // Save start_time
-    while echo_pin.is_low() {
-        start_time = SystemTime::now();
+#[tokio::main]
+async fn main() {
+    if let Err(err) = run().await {
+        error!("{}", err);
+        for err in err.chain().skip(1) {
+            error!("Caused by: {}", err);
+        }
     }
-
-    // Save arrival_time
-    while echo_pin.is_high() {
-        end_time = SystemTime::now();
-    }
-
-    // Duration between start and arrival
-    let elapsed_time = end_time.duration_since(start_time)?;
-    trace!(
-        "Start time: {:?}, end time: {:?}, elapsed time: {:?}",
-        start_time,
-        end_time,
-        elapsed_time
-    );
-
-    // Multiply with sonic speed (34300 cm/s) and then divide by 2, as the wave hits and returns
-    // back.
-    let distance = (elapsed_time.as_secs_f64() * SONIC_SPEED) / 2_f64;
-
-    Ok(distance)
 }
