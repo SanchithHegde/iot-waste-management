@@ -8,8 +8,10 @@ pub(crate) async fn publish_message(
     message: String,
     config: Arc<crate::config::Config>,
 ) -> Result<()> {
+    // Read broker address from config
     let broker_address = &config.mqtt.broker_url;
 
+    // Build async MQTT client
     let client = mqtt::CreateOptionsBuilder::new()
         .server_uri(broker_address)
         .client_id(&config.machine.id)
@@ -18,6 +20,7 @@ pub(crate) async fn publish_message(
         .delete_oldest_messages(true)
         .create_client()?;
 
+    // Build connect options
     let connect_opts = mqtt::ConnectOptionsBuilder::new()
         .keep_alive_interval(Duration::from_secs(config.mqtt.keep_alive_interval))
         .connect_timeout(Duration::from_secs(config.mqtt.connect_timeout))
@@ -28,9 +31,11 @@ pub(crate) async fn publish_message(
         .finalize();
 
     let handle: tokio::task::JoinHandle<Result<(), mqtt::Error>> = tokio::task::spawn(async move {
+        // Connect to client using connect options
         client.connect(connect_opts).await?;
         trace!("Connected to MQTT broker");
 
+        // Build message
         let mqtt_message = mqtt::MessageBuilder::new()
             .topic(&config.mqtt.topic)
             .payload(message.as_bytes())
@@ -38,12 +43,14 @@ pub(crate) async fn publish_message(
             .retained(true)
             .finalize();
 
+        // Publish message under topic
         client.publish(mqtt_message).await?;
         debug!(
             r#"Published message "{}" under topic "{}""#,
             &message, config.mqtt.topic
         );
 
+        // Disconnect from broker
         client.disconnect(None).await?;
         trace!("Disconnected from MQTT broker");
 
