@@ -6,7 +6,7 @@ id       = "123456789"
 location = "Mysuru"
 
 [mqtt]
-broker_url          = "tcp://localhost:1883"
+broker_url          = "ssl://localhost:1884"
 topic               = "mysuru"
 qos                 = 2
 buffer_size         = 10
@@ -14,3 +14,8 @@ keep_alive_interval = 60
 connect_timeout     = 30
 min_retry_interval  = 5
 max_retry_interval  = 60
+
+[mqtt.ssl]
+ca_certs     = "ca.pem"
+client_certs = "client-cert.pem"
+client_key   = "client-key.pem"

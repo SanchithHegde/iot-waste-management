@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use serde_derive::Deserialize;
 
 #[derive(Debug, Default, Deserialize)]
@@ -24,4 +26,12 @@ pub(crate) struct Mqtt {
     pub(crate) connect_timeout: u64,
     pub(crate) min_retry_interval: u64,
     pub(crate) max_retry_interval: u64,
+    pub(crate) ssl: Option<Ssl>,
+}
+
+#[derive(Debug, Default, Deserialize)]
+pub(crate) struct Ssl {
+    pub(crate) ca_certs: PathBuf,
+    pub(crate) client_certs: PathBuf,
+    pub(crate) client_key: PathBuf,
 }
