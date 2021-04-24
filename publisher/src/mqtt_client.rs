@@ -16,7 +16,7 @@ pub(crate) async fn publish_message(
         .server_uri(broker_address)
         .client_id(&config.machine.id)
         .max_buffered_messages(config.mqtt.buffer_size as i32)
-        .mqtt_version(5)
+        .mqtt_version(mqtt::MQTT_VERSION_5)
         .delete_oldest_messages(true)
         .create_client()?;
 
