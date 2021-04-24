@@ -1,4 +1,5 @@
 mod config;
+mod mqtt_client;
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
@@ -15,7 +16,8 @@ const SONIC_SPEED: f64 = 34300_f64;
 const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     // Initialize timed logger
     pretty_env_logger::init_timed();
 
@@ -47,7 +49,7 @@ fn main() -> Result<()> {
             &config_file.display()
         )
     })?;
-    let config: config::Config = toml::from_str(&config)?;
+    let config: Arc<config::Config> = Arc::new(toml::from_str(&config)?);
     trace!(
         r#"Read config {:?} from file "{}""#,
         &config,
@@ -74,8 +76,12 @@ fn main() -> Result<()> {
     while !terminate.load(Ordering::Relaxed) {
         let distance =
             distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
-
         debug!("Measured distance: {:.1} cm", distance);
+
+        if distance <= config.threshold_distance as f64 {
+            mqtt_client::publish_message(format!("{}", distance), Arc::clone(&config)).await?;
+        }
+
         std::thread::sleep(Duration::from_secs(config.delay));
     }
 
