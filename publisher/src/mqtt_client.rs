@@ -1,6 +1,6 @@
 use std::{sync::Arc, time::Duration};
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use log::{debug, info, trace};
 use paho_mqtt as mqtt;
 
@@ -21,14 +21,56 @@ pub(crate) async fn publish_message(
         .create_client()?;
 
     // Build connect options
-    let connect_opts = mqtt::ConnectOptionsBuilder::new()
+    let mut connect_opts_builder = mqtt::ConnectOptionsBuilder::new();
+    connect_opts_builder
         .keep_alive_interval(Duration::from_secs(config.mqtt.keep_alive_interval))
         .connect_timeout(Duration::from_secs(config.mqtt.connect_timeout))
         .automatic_reconnect(
             Duration::from_secs(config.mqtt.min_retry_interval),
             Duration::from_secs(config.mqtt.max_retry_interval),
-        )
-        .finalize();
+        );
+
+    if let Some(ssl) = &config.mqtt.ssl {
+        // Performing check for the files' existence manually because paho-mqtt doesn't check and
+        // passes filenames directly to the C library during connection
+
+        // Check if CA certificates file can be opened
+        std::fs::File::open(&ssl.ca_certs).with_context(|| {
+            format!(
+                r#"Failed to read CA certificates file: "{}""#,
+                &ssl.ca_certs.display()
+            )
+        })?;
+
+        // Check if client certificates file can be opened
+        std::fs::File::open(&ssl.client_certs).with_context(|| {
+            format!(
+                r#"Failed to read client certificates file: "{}""#,
+                &ssl.client_certs.display()
+            )
+        })?;
+
+        // Check if client private key file can be opened
+        std::fs::File::open(&ssl.client_key).with_context(|| {
+            format!(
+                r#"Failed to read client private key file: "{}""#,
+                &ssl.client_key.display()
+            )
+        })?;
+
+        // Build SSL options
+        let ssl_opts = mqtt::SslOptionsBuilder::new()
+            .trust_store(&ssl.ca_certs)?
+            .key_store(&ssl.client_certs)?
+            .private_key(&ssl.client_key)?
+            .enable_server_cert_auth(true)
+            .verify(true)
+            .finalize();
+
+        connect_opts_builder.ssl_options(ssl_opts);
+    };
+
+    let connect_opts = connect_opts_builder.finalize();
 
     // Build message
     let mqtt_message = mqtt::MessageBuilder::new()
