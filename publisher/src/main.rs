@@ -1,9 +1,13 @@
 mod config;
 mod mqtt_client;
 
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
-use std::time::{Duration, SystemTime};
+use std::{
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    time::{Duration, SystemTime},
+};
 
 use anyhow::{Context, Result};
 use log::{debug, info, trace};
