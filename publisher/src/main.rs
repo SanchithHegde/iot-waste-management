@@ -11,8 +11,10 @@ use std::{
 
 use anyhow::{Context, Result};
 use log::{debug, error, info, trace};
-use rppal::gpio::{Gpio, InputPin, OutputPin};
-use rppal::system::DeviceInfo;
+use rppal::{
+    gpio::{Gpio, InputPin, OutputPin},
+    system::DeviceInfo,
+};
 
 const SONIC_SPEED: f64 = 34300_f64;
 
