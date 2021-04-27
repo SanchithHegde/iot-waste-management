@@ -2,10 +2,7 @@ mod config;
 mod mqtt_client;
 
 use std::{
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
+    sync::Arc,
     time::{Duration, SystemTime},
 };
 
@@ -63,13 +60,20 @@ async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Resul
 }
 
 async fn run() -> Result<()> {
+    use signal_hook::consts::signal::{SIGINT, SIGQUIT, SIGTERM};
+
+    const SIGINT_USIZE: usize = SIGINT as usize;
+    const SIGQUIT_USIZE: usize = SIGQUIT as usize;
+    const SIGTERM_USIZE: usize = SIGTERM as usize;
+
     // Initialize timed logger
     pretty_env_logger::init_timed();
 
     // Register signal handlers
-    let terminate = Arc::new(AtomicBool::new(false));
-    signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate))?;
-    signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate))?;
+    let terminate = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+    signal_hook::flag::register_usize(SIGINT, Arc::clone(&terminate), SIGINT_USIZE)?;
+    signal_hook::flag::register_usize(SIGQUIT, Arc::clone(&terminate), SIGQUIT_USIZE)?;
+    signal_hook::flag::register_usize(SIGTERM, Arc::clone(&terminate), SIGTERM_USIZE)?;
     trace!("Registered signal handlers");
 
     // Print device information
@@ -121,19 +125,41 @@ async fn run() -> Result<()> {
     // Build an Interval instance for a duration of `config.delay` seconds
     let mut interval = tokio::time::interval(Duration::from_secs(config.delay));
 
-    while !terminate.load(Ordering::Relaxed) {
-        // Measure distance using sensor
-        let distance = distance(&mut trigger_pin, &mut echo_pin)
-            .await
-            .with_context(|| "Failed to find distance")?;
-        debug!("Measured distance: {:.1} cm", distance);
+    loop {
+        match terminate.load(std::sync::atomic::Ordering::Relaxed) {
+            0 => {
+                // Measure distance using sensor
+                let distance = distance(&mut trigger_pin, &mut echo_pin)
+                    .await
+                    .with_context(|| "Failed to find distance")?;
+                debug!("Measured distance: {:.1} cm", distance);
 
-        if distance <= config.threshold_distance as f64 {
-            mqtt_client::publish_message(format!("{}", distance), Arc::clone(&config)).await?;
+                if distance <= config.threshold_distance as f64 {
+                    mqtt_client::publish_message(format!("{}", distance), Arc::clone(&config))
+                        .await?;
+                }
+
+                // Wait for the interval to complete
+                interval.tick().await;
+            }
+
+            SIGINT_USIZE => {
+                info!("Received signal SIGINT, quitting ...");
+                break;
+            }
+
+            SIGQUIT_USIZE => {
+                info!("Received signal SIGQUIT, quitting ...");
+                break;
+            }
+
+            SIGTERM_USIZE => {
+                info!("Received signal SIGTERM, quitting ...");
+                break;
+            }
+
+            _ => unreachable!(),
         }
-
-        // Wait for the interval to complete
-        interval.tick().await;
     }
 
     Ok(())
