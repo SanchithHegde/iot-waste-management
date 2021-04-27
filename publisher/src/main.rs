@@ -20,12 +20,15 @@ const SONIC_SPEED: f64 = 34300_f64;
 const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
-fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
+async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
+    // Build an Interval instance for a duration of 10 microseconds
+    let mut interval = tokio::time::interval(Duration::from_micros(10));
+
     // Set `GPIO_TRIGGER` to HIGH
     trigger_pin.set_high();
 
     // Set `GPIO_TRIGGER` to LOW after a delay of 10 microseconds
-    std::thread::sleep(Duration::from_micros(10));
+    interval.tick().await;
     trigger_pin.set_low();
 
     let mut start_time = SystemTime::now();
@@ -113,16 +116,22 @@ async fn run() -> Result<()> {
         .into_input();
     trace!("Setup pin {} as input pin", GPIO_ECHO);
 
+    // Build an Interval instance for a duration of `config.delay` seconds
+    let mut interval = tokio::time::interval(Duration::from_secs(config.delay));
+
     while !terminate.load(Ordering::Relaxed) {
-        let distance =
-            distance(&mut trigger_pin, &mut echo_pin).with_context(|| "Failed to find distance")?;
+        // Measure distance using sensor
+        let distance = distance(&mut trigger_pin, &mut echo_pin)
+            .await
+            .with_context(|| "Failed to find distance")?;
         debug!("Measured distance: {:.1} cm", distance);
 
         if distance <= config.threshold_distance as f64 {
             mqtt_client::publish_message(format!("{}", distance), Arc::clone(&config)).await?;
         }
 
-        std::thread::sleep(Duration::from_secs(config.delay));
+        // Wait for the interval to complete
+        interval.tick().await;
     }
 
     Ok(())
