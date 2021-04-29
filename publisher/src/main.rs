@@ -125,6 +125,9 @@ async fn run() -> Result<()> {
     // Build an Interval instance for a duration of `config.delay` seconds
     let mut interval = tokio::time::interval(Duration::from_secs(config.delay));
 
+    // Build MQTT client
+    let client = Arc::new(mqtt_client::MqttClient::from_config(Arc::clone(&config))?);
+
     loop {
         match terminate.load(std::sync::atomic::Ordering::Relaxed) {
             0 => {
@@ -135,8 +138,15 @@ async fn run() -> Result<()> {
                 debug!("Measured distance: {:.1} cm", distance);
 
                 if distance <= config.threshold_distance as f64 {
-                    mqtt_client::publish_message(format!("{}", distance), Arc::clone(&config))
-                        .await?;
+                    let client = Arc::clone(&client);
+
+                    let handle: tokio::task::JoinHandle<Result<()>> =
+                        tokio::task::spawn(async move {
+                            client.publish_message(format!("{}", distance)).await?;
+                            Ok(())
+                        });
+
+                    (handle.await?)?;
                 }
 
                 // Wait for the interval to complete
