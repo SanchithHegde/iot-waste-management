@@ -19,6 +19,30 @@ const SONIC_SPEED: f64 = 34300_f64;
 const GPIO_TRIGGER: u8 = 18;
 const GPIO_ECHO: u8 = 24;
 
+async fn handle_signals(signals: signal_hook_tokio::Signals) {
+    use futures::stream::StreamExt;
+    use signal_hook::consts::signal::{SIGINT, SIGQUIT, SIGTERM};
+
+    let mut signals = signals.fuse();
+    while let Some(signal) = signals.next().await {
+        match signal {
+            SIGINT => {
+                info!("Received signal SIGINT, quitting ...");
+                std::process::exit(1);
+            }
+            SIGQUIT => {
+                info!("Received signal SIGQUIT, quitting ...");
+                std::process::exit(1);
+            }
+            SIGTERM => {
+                info!("Received signal SIGTERM, quitting ...");
+                std::process::exit(1);
+            }
+            _ => unreachable!(),
+        }
+    }
+}
+
 async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
     // Build an Interval instance for a duration of 10 microseconds
     let mut interval = tokio::time::interval(Duration::from_micros(10));
@@ -59,21 +83,17 @@ async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Resul
     Ok(distance)
 }
 
+#[allow(unreachable_code, unused_variables)]
 async fn run() -> Result<()> {
     use signal_hook::consts::signal::{SIGINT, SIGQUIT, SIGTERM};
-
-    const SIGINT_USIZE: usize = SIGINT as usize;
-    const SIGQUIT_USIZE: usize = SIGQUIT as usize;
-    const SIGTERM_USIZE: usize = SIGTERM as usize;
 
     // Initialize timed logger
     pretty_env_logger::init_timed();
 
     // Register signal handlers
-    let terminate = Arc::new(std::sync::atomic::AtomicUsize::new(0));
-    signal_hook::flag::register_usize(SIGINT, Arc::clone(&terminate), SIGINT_USIZE)?;
-    signal_hook::flag::register_usize(SIGQUIT, Arc::clone(&terminate), SIGQUIT_USIZE)?;
-    signal_hook::flag::register_usize(SIGTERM, Arc::clone(&terminate), SIGTERM_USIZE)?;
+    let signals = signal_hook_tokio::Signals::new(&[SIGTERM, SIGINT, SIGQUIT])?;
+    let handle = signals.handle();
+    let signals_task = tokio::spawn(handle_signals(signals));
     trace!("Registered signal handlers");
 
     // Print device information
@@ -129,48 +149,29 @@ async fn run() -> Result<()> {
     let client = Arc::new(mqtt_client::MqttClient::from_config(Arc::clone(&config))?);
 
     loop {
-        match terminate.load(std::sync::atomic::Ordering::Relaxed) {
-            0 => {
-                // Measure distance using sensor
-                let distance = distance(&mut trigger_pin, &mut echo_pin)
-                    .await
-                    .with_context(|| "Failed to find distance")?;
-                debug!("Measured distance: {:.1} cm", distance);
+        // Measure distance using sensor
+        let distance = distance(&mut trigger_pin, &mut echo_pin)
+            .await
+            .with_context(|| "Failed to find distance")?;
+        debug!("Measured distance: {:.1} cm", distance);
 
-                if distance <= config.threshold_distance as f64 {
-                    let client = Arc::clone(&client);
+        if distance <= config.threshold_distance as f64 {
+            let client = Arc::clone(&client);
 
-                    let handle: tokio::task::JoinHandle<Result<()>> =
-                        tokio::task::spawn(async move {
-                            client.publish_message(format!("{}", distance)).await?;
-                            Ok(())
-                        });
+            let handle: tokio::task::JoinHandle<Result<()>> = tokio::task::spawn(async move {
+                client.publish_message(format!("{}", distance)).await?;
+                Ok(())
+            });
 
-                    (handle.await?)?;
-                }
-
-                // Wait for the interval to complete
-                interval.tick().await;
-            }
-
-            SIGINT_USIZE => {
-                info!("Received signal SIGINT, quitting ...");
-                break;
-            }
-
-            SIGQUIT_USIZE => {
-                info!("Received signal SIGQUIT, quitting ...");
-                break;
-            }
-
-            SIGTERM_USIZE => {
-                info!("Received signal SIGTERM, quitting ...");
-                break;
-            }
-
-            _ => unreachable!(),
+            (handle.await?)?;
         }
+
+        // Wait for the interval to complete
+        interval.tick().await;
     }
+
+    handle.close();
+    signals_task.await?;
 
     Ok(())
 }
