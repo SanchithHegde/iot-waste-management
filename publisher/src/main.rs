@@ -43,7 +43,11 @@ async fn handle_signals(signals: signal_hook_tokio::Signals) {
     }
 }
 
-async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Result<f64> {
+async fn distance(
+    trigger_pin: &mut OutputPin,
+    echo_pin: &mut InputPin,
+    timeout: Duration,
+) -> Result<f64> {
     // Build an Interval instance for a duration of 10 microseconds
     let mut interval = tokio::time::interval(Duration::from_micros(10));
 
@@ -59,6 +63,15 @@ async fn distance(trigger_pin: &mut OutputPin, echo_pin: &mut InputPin) -> Resul
 
     // Save start_time
     while echo_pin.is_low() {
+        // Assume sensor is disconnected if the `GPIO_ECHO` pin stays LOW for a duration more than
+        // the timeout duration.
+        if start_time.duration_since(end_time)? >= timeout {
+            anyhow::bail!(
+                "Failed to communicate with the sensor. \
+                Please ensure a proper connection, and that the sensor works properly."
+            );
+        }
+
         start_time = SystemTime::now();
     }
 
@@ -145,12 +158,15 @@ async fn run() -> Result<()> {
     // Build an Interval instance for a duration of `config.delay` seconds
     let mut interval = tokio::time::interval(Duration::from_secs(config.delay));
 
+    // Timeout for calculating distance, beyond which sensor is assumed to be not connected
+    let timeout = Duration::from_millis(config.measurement_timeout);
+
     // Build MQTT client
     let client = Arc::new(mqtt_client::MqttClient::from_config(Arc::clone(&config))?);
 
     loop {
         // Measure distance using sensor
-        let distance = distance(&mut trigger_pin, &mut echo_pin)
+        let distance = distance(&mut trigger_pin, &mut echo_pin, timeout)
             .await
             .with_context(|| "Failed to find distance")?;
         debug!("Measured distance: {:.1} cm", distance);

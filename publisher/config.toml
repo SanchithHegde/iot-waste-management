@@ -1,5 +1,6 @@
-threshold_distance = 10
-delay              = 2
+threshold_distance  = 10
+delay               = 5
+measurement_timeout = 50
 
 [machine]
 id       = "123456789"

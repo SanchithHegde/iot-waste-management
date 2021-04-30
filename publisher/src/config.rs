@@ -6,6 +6,7 @@ use serde_derive::Deserialize;
 pub(crate) struct Config {
     pub(crate) threshold_distance: u32,
     pub(crate) delay: u64,
+    pub(crate) measurement_timeout: u64,
     pub(crate) machine: Machine,
     pub(crate) mqtt: Mqtt,
 }
