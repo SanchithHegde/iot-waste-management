@@ -9,7 +9,6 @@ location = "Mysuru"
 [mqtt]
 broker_url          = "ssl://localhost:1884"
 topic               = "mysuru"
-qos                 = 2
 buffer_size         = 10
 keep_alive_interval = 60
 connect_timeout     = 30
