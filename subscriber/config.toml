@@ -1,0 +1,9 @@
+[mqtt]
+broker_url = "ssl://localhost:18884"
+topic      = "mysuru"
+qos        = 2
+
+[mqtt.ssl]
+ca_certs     = "tls/ca.pem"
+client_certs = "tls/client-cert.pem"
+client_key   = "tls/client-key.pem"
