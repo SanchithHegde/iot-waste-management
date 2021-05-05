@@ -41,7 +41,11 @@ impl MqttClient {
 
         let connect_opts = connect_opts_builder.finalize();
 
-        let topic = config.mqtt.topic.clone();
+        // Set topic to publish messages as "topic_prefix/location/machine_id"
+        let topic = format!(
+            "{}/{}/{}",
+            config.mqtt.topic_prefix, &config.machine.location, &config.machine.id
+        );
 
         Ok(MqttClient {
             broker_url: config.mqtt.broker_url.clone(),

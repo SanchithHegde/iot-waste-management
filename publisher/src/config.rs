@@ -20,7 +20,7 @@ pub(crate) struct Machine {
 #[derive(Debug, Default, Deserialize)]
 pub(crate) struct Mqtt {
     pub(crate) broker_url: String,
-    pub(crate) topic: String,
+    pub(crate) topic_prefix: String,
     pub(crate) buffer_size: u32,
     pub(crate) keep_alive_interval: u64,
     pub(crate) connect_timeout: u64,

@@ -4,11 +4,11 @@ measurement_timeout = 50
 
 [machine]
 id       = "123456789"
-location = "Mysuru"
+location = "XYZ Street"
 
 [mqtt]
 broker_url          = "ssl://localhost:1884"
-topic               = "mysuru"
+topic_prefix        = "ABC City"
 buffer_size         = 10
 keep_alive_interval = 60
 connect_timeout     = 30
