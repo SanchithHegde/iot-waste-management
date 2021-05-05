@@ -4,7 +4,7 @@ import coloredlogs
 import dacite
 import toml
 
-from iotwm.config import Config
+from .config import Config
 
 # Enable logging
 LOGGER = logging.getLogger(__name__)
@@ -15,5 +15,5 @@ coloredlogs.install(
 )
 
 # Load config
-config: Config = dacite.from_dict(data_class=Config, data=toml.load("config.toml"))
-LOGGER.info(config)
+CONFIG: Config = dacite.from_dict(data_class=Config, data=toml.load("config.toml"))
+LOGGER.info(CONFIG)
