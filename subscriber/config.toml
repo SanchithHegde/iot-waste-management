@@ -1,7 +1,9 @@
 [mqtt]
-broker_url = "ssl://localhost:18884"
-topic      = "mysuru"
-qos        = 2
+broker_address = "localhost"
+port           = 18884
+topic          = "mysuru"
+machine_id     = '987654321'
+keepalive      = 60
 
 [mqtt.ssl]
 ca_certs     = "tls/ca.pem"

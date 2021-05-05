@@ -31,9 +31,11 @@ class Ssl:
 
 @dataclass
 class Mqtt:
-    broker_url: str
+    broker_address: str
+    port: int
     topic: str
-    qos: int
+    machine_id: str
+    keepalive: int
     ssl: Optional[Ssl]
 
 

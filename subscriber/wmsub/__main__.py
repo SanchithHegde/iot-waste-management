@@ -2,7 +2,8 @@ import signal
 import sys
 from typing import Any
 
-from . import LOGGER
+from . import CONFIG, LOGGER
+from .mqtt_client import MqttClient
 
 
 def signal_handler(signal_number: int, _stack_frame: Any):
@@ -19,6 +20,9 @@ def signal_handler(signal_number: int, _stack_frame: Any):
 def main():
     # Register signal handlers
     signal.signal(signal.SIGINT, signal_handler)
+
+    client = MqttClient(config=CONFIG)
+    client.receive_messages()
 
 
 if __name__ == "__main__":
