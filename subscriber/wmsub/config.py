@@ -33,7 +33,7 @@ class Ssl:
 class Mqtt:
     broker_address: str
     port: int
-    topic: str
+    topic_prefix: str
     machine_id: str
     keepalive: int
     ssl: Optional[Ssl]

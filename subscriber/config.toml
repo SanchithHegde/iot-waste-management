@@ -1,7 +1,7 @@
 [mqtt]
 broker_address = "localhost"
 port           = 18884
-topic          = "mysuru"
+topic_prefix   = "ABC City/#"
 machine_id     = '987654321'
 keepalive      = 60
 
