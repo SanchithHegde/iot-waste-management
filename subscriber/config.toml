@@ -9,3 +9,8 @@ keepalive      = 60
 ca_certs     = "tls/ca.pem"
 client_certs = "tls/client-cert.pem"
 client_key   = "tls/client-key.pem"
+
+[notifications.telegram]
+bot_token = '123456789:VeRyS3cRe7t0K3N'
+chat_id   = '-1001234567890'
+workers   = 4

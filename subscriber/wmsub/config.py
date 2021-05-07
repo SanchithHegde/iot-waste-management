@@ -23,5 +23,18 @@ class Mqtt:
 
 
 @dataclass
+class Telegram:
+    bot_token: str
+    chat_id: str
+    workers: int
+
+
+@dataclass
+class Notifications:
+    telegram: Telegram
+
+
+@dataclass
 class Config:
     mqtt: Mqtt
+    notifications: Notifications
