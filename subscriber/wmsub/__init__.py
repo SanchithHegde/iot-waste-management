@@ -8,10 +8,12 @@ from .config import Config
 
 # Enable logging
 LOGGER = logging.getLogger(__name__)
+LOG_LEVEL = "DEBUG"
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 coloredlogs.install(
-    level="DEBUG",
+    level=LOG_LEVEL,
     logger=LOGGER,
-    fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    fmt=LOG_FORMAT,
 )
 
 # Load config
