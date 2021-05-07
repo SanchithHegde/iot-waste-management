@@ -131,7 +131,7 @@ async fn run() -> Result<()> {
             &config_file.display()
         )
     })?;
-    let config: Arc<config::Config> = Arc::new(toml::from_str(&config)?);
+    let config: config::Config = toml::from_str(&config)?;
     trace!(
         r#"Read config {:?} from file "{}""#,
         &config,
@@ -162,7 +162,7 @@ async fn run() -> Result<()> {
     let timeout = Duration::from_millis(config.measurement_timeout);
 
     // Build MQTT client
-    let client = Arc::new(mqtt_client::MqttClient::from_config(Arc::clone(&config))?);
+    let client = Arc::new(mqtt_client::MqttClient::from_config(&config)?);
 
     loop {
         // Measure distance using sensor

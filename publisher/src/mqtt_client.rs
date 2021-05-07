@@ -1,4 +1,4 @@
-use std::{sync::Arc, time::Duration};
+use std::time::Duration;
 
 use anyhow::{Context, Result};
 use log::{debug, info, trace};
@@ -12,7 +12,7 @@ pub(crate) struct MqttClient {
 }
 
 impl MqttClient {
-    pub(crate) fn from_config(config: Arc<crate::config::Config>) -> Result<Self> {
+    pub(crate) fn from_config(config: &crate::config::Config) -> Result<Self> {
         // Build async MQTT client
         let client = mqtt::CreateOptionsBuilder::new()
             .server_uri(&config.mqtt.broker_url)
