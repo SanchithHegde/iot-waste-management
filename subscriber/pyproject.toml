@@ -8,11 +8,12 @@ authors     = [
 ]
 
 [tool.poetry.dependencies]
-python      = "^3.8"
-coloredlogs = "^15.0"
-dacite      = "^1.6.0"
-toml        = "^0.10.2"
-paho-mqtt   = "^1.5.1"
+python              = "^3.8"
+coloredlogs         = "^15.0"
+dacite              = "^1.6.0"
+toml                = "^0.10.2"
+paho-mqtt           = "^1.5.1"
+python-telegram-bot = "^13.5"
 
 [tool.poetry.dev-dependencies]
 black  = { version = "^21.4b2", allow-prereleases = true }
