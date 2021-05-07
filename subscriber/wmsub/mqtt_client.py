@@ -13,6 +13,8 @@ from paho.mqtt.reasoncodes import ReasonCodes
 
 from . import LOGGER
 from .config import Config
+from .notifications import notify
+from .utils import parse_topic_location_machine_id
 
 
 class MqttClient:  # pylint:disable=too-few-public-methods
@@ -29,7 +31,7 @@ class MqttClient:  # pylint:disable=too-few-public-methods
         # Set other attributes
         self._host = config.mqtt.broker_address
         self._port = config.mqtt.port
-        self._topic = config.mqtt.topic
+        self._topic = config.mqtt.topic_prefix
         self._keepalive = config.mqtt.keepalive
 
         # Set SSL options if they're present in config
@@ -78,9 +80,18 @@ class MqttClient:  # pylint:disable=too-few-public-methods
 
     @staticmethod
     def _on_message(_client: Client, _userdata: Any, message: MQTTMessage):
-        LOGGER.info(
-            "Received message from broker:\n%s", message.payload.decode("UTF-8")
+        payload = message.payload.decode("UTF-8")
+        LOGGER.info("Received message from broker:\n%s", payload)
+        topic_prefix, location, machine_id = parse_topic_location_machine_id(
+            message.topic
         )
+        msg = (
+            f"Topic prefix: {topic_prefix}\n"
+            f"Location: {location}\n"
+            f"Machine ID: {machine_id}\n"
+            f"Payload:\n{payload}"
+        )
+        notify(msg)
 
     def _on_subscribe(
         self,
