@@ -1,7 +1,7 @@
 package me.sanchithhegde.wastecollection
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.onesignal.OneSignal
 
 const val ONESIGNAL_APP_ID = BuildConfig.ONESIGNAL_APP_ID
