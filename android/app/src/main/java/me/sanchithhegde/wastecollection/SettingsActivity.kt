@@ -2,7 +2,10 @@ package me.sanchithhegde.wastecollection
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.onesignal.OneSignal
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -29,6 +32,23 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            val locationKey = "location"
+            val locationPreference =
+                findPreference<EditTextPreference>(locationKey)
+
+            locationPreference?.onPreferenceChangeListener =
+                Preference.OnPreferenceChangeListener { _, newValue ->
+                    OneSignal.getTags { jsonObject ->
+                        if (jsonObject == null ||
+                            jsonObject.getString(locationKey) != newValue.toString()
+                        ) {
+                            OneSignal.sendTag(locationKey, newValue.toString())
+                        }
+                    }
+
+                    true
+                }
         }
     }
 }
