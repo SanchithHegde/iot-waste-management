@@ -33,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-            val locationKey = "location"
+            val locationKey = R.string.pref_location.toString()
             val locationPreference =
                 findPreference<EditTextPreference>(locationKey)
 

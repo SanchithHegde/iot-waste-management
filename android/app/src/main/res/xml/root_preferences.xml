@@ -4,7 +4,7 @@
 
         <EditTextPreference
             app:dialogMessage="@string/hint_location"
-            app:key="location"
+            app:key="@string/pref_location"
             app:title="@string/title_location"
             app:useSimpleSummaryProvider="true" />
 
