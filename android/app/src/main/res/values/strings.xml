@@ -17,5 +17,4 @@
     <!-- Location EditText Hint -->
     <string name="hint_location">Determines the location to receive notifications for.</string>
 
-
 </resources>
