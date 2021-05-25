@@ -7,8 +7,8 @@
         layout="@layout/toolbar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/settings"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
