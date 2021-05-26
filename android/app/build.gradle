@@ -56,7 +56,6 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
     implementation "com.onesignal:OneSignal:$rootProject.oneSignalVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
 
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.google.dagger:hilt-compiler:$rootProject.hiltVersion"
