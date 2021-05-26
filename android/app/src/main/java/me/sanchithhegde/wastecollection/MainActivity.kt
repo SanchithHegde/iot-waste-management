@@ -8,9 +8,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.onesignal.OneSignal
-import me.sanchithhegde.wastecollection.BuildConfig.ONESIGNAL_APP_ID
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +27,6 @@ class MainActivity : AppCompatActivity() {
             navController,
             appBarConfiguration
         )
-
-        // Logging set to help debug issues, remove before releasing your app.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-
-        // OneSignal Initialization
-        OneSignal.initWithContext(this)
-        OneSignal.setAppId(ONESIGNAL_APP_ID)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
