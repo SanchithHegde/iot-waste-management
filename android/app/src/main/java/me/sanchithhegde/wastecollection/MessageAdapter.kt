@@ -1,38 +1,34 @@
 package me.sanchithhegde.wastecollection
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import me.sanchithhegde.wastecollection.data.Message
+import me.sanchithhegde.wastecollection.databinding.ItemMessageBinding
 
 class MessageAdapter :
     ListAdapter<Message, MessageAdapter.MessageViewHolder>(MessageDiffCallback) {
 
-    class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val messageTimeTextView: AppCompatTextView =
-            itemView.findViewById(R.id.message_time)
-        private val messageTitleTextView: AppCompatTextView =
-            itemView.findViewById(R.id.message_title)
-        private val messageBodyTextView: AppCompatTextView =
-            itemView.findViewById(R.id.message_body)
-        private var currentMessage: Message? = null
-
-        fun bind(message: Message) {
-            currentMessage = message
-
-            messageTimeTextView.text = message.timestamp
-            messageTitleTextView.text = message.title
-            messageBodyTextView.text = message.body
+    class MessageViewHolder(private val binding: ItemMessageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Message) {
+            binding.apply {
+                message = item
+                executePendingBindings()
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
-        return MessageViewHolder(view)
+        return MessageViewHolder(
+            ItemMessageBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
@@ -43,11 +39,10 @@ class MessageAdapter :
 
 object MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
     override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-        return oldItem == newItem
-    }
-
-    override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
         return oldItem.id == newItem.id
     }
 
+    override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+        return oldItem == newItem
+    }
 }
