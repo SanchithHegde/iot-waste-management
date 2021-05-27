@@ -1,16 +1,23 @@
 package me.sanchithhegde.wastecollection.notifications
 
 import android.content.Context
-import androidx.room.Room
 import com.onesignal.OSNotification
 import com.onesignal.OSNotificationReceivedEvent
 import com.onesignal.OneSignal
-import me.sanchithhegde.wastecollection.data.AppDatabase
-import me.sanchithhegde.wastecollection.data.MessageEntity
-import me.sanchithhegde.wastecollection.utilities.DATABASE_NAME
-import java.time.Instant
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import me.sanchithhegde.wastecollection.data.MessageRepository
 
 class NotificationServiceExtension : OneSignal.OSRemoteNotificationReceivedHandler {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface NotificationServiceExtensionEntryPoint {
+        fun messageRepository(): MessageRepository
+    }
+
     override fun remoteNotificationReceived(
         context: Context?,
         notificationReceivedEvent: OSNotificationReceivedEvent?
@@ -19,19 +26,14 @@ class NotificationServiceExtension : OneSignal.OSRemoteNotificationReceivedHandl
             val notification: OSNotification =
                 notificationReceivedEvent.notification
 
-            context?.let {
-                val db =
-                    Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
-                val messageDao = db.messageDao()
+            val appContext = context?.applicationContext ?: throw IllegalStateException()
+            val hiltEntryPoint = EntryPointAccessors.fromApplication(
+                appContext,
+                NotificationServiceExtensionEntryPoint::class.java
+            )
+            val messageRepository = hiltEntryPoint.messageRepository()
 
-                messageDao.insert(
-                    MessageEntity(
-                        Instant.now().toEpochMilli(),
-                        notification.title,
-                        notification.body
-                    )
-                )
-            }
+            messageRepository.insertMessage(notification.title, notification.body)
 
             notificationReceivedEvent.complete(notification)
         }

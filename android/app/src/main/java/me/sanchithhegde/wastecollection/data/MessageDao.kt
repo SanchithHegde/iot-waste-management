@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Dao
 interface MessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(message: MessageEntity)
+    abstract fun insertMessage(message: MessageEntity)
 
     @Query("SELECT * FROM messages")
     abstract fun getAllMessages(): Flow<List<MessageEntity>>
