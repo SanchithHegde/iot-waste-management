@@ -20,7 +20,7 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providesMessageDao(appDatabase: AppDatabase): MessageDao {
+    fun provideMessageDao(appDatabase: AppDatabase): MessageDao {
         return appDatabase.messageDao()
     }
 }
