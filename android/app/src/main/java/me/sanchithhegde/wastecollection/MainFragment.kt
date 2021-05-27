@@ -31,14 +31,6 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
         return binding.root
-
-        /*val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-
-        val messageAdapter = MessageAdapter()
-        val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = messageAdapter
-
-        return rootView*/
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
