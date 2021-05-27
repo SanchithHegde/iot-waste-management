@@ -17,6 +17,7 @@ buildscript {
         hiltVersion = "2.36"
         hiltViewModelVersion = "1.0.0-alpha03"
         kotlinVersion = "1.5.10"
+        ktlintVersion = "0.38.1"
         ktxVersion = "1.5.0"
         lifecycleVersion = "2.3.1"
         materialVersion = "1.3.0"
@@ -40,6 +41,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.diffplug.spotless" version "5.12.5"
+}
+
 allprojects {
     repositories {
         google()
@@ -47,6 +52,14 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+spotless {
+    kotlin {
+        encoding "UTF-8"
+        target "**/*.kt"
+        ktlint(ktlintVersion).userData(["max_line_length": "100"])
+
+        endWithNewline()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+    }
 }
