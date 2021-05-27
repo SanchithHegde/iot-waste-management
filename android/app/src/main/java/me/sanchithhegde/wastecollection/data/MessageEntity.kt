@@ -22,11 +22,15 @@ data class MessageEntity(
 
     fun toMessage(context: Context): Message {
         return Message(
-            id, DateUtils.formatDateTime(
-                context, timestamp,
+            id,
+            DateUtils.formatDateTime(
+                context,
+                timestamp,
                 DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or
-                        DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_WEEKDAY
-            ), title, body
+                    DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_WEEKDAY
+            ),
+            title,
+            body
         )
     }
 }

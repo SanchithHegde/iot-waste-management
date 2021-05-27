@@ -11,5 +11,4 @@ import javax.inject.Inject
 class MessageViewModel @Inject internal constructor(messageRepository: MessageRepository) :
     ViewModel() {
     val messages: LiveData<List<Message>> = messageRepository.getAllMessages()
-
 }
