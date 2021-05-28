@@ -20,7 +20,6 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="me.sanchithhegde.wastecollection.SettingsFragment"
-        android:label="@string/title_activity_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="@string/title_activity_settings" />
 
 </navigation>
