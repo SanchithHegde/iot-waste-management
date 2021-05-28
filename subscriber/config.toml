@@ -14,3 +14,7 @@ client_key   = "tls/client-key.pem"
 bot_token = '123456789:VeRyS3cRe7t0K3N'
 chat_id   = '-1001234567890'
 workers   = 4
+
+[notifications.onesignal]
+app_id  = "8250eaf6-1a58-489e-b136-7c74a864b434"
+api_key = "pi6KcVaJ2iSddaKp5gT2QKHrM7WkrdXjunVci3XA42iHKuCA"

@@ -82,16 +82,12 @@ class MqttClient:  # pylint:disable=too-few-public-methods
     def _on_message(_client: Client, _userdata: Any, message: MQTTMessage):
         payload = message.payload.decode("UTF-8")
         LOGGER.info("Received message from broker:\n%s", payload)
-        topic_prefix, location, machine_id = parse_topic_location_machine_id(
+        topic_prefix, location, _machine_id = parse_topic_location_machine_id(
             message.topic
         )
-        msg = (
-            f"Topic prefix: {topic_prefix}\n"
-            f"Location: {location}\n"
-            f"Machine ID: {machine_id}\n"
-            f"Payload:\n{payload}"
-        )
-        notify(msg)
+        title = "Take me out!"
+        msg = f"Dustbin at {location} is full and needs your attention!"
+        notify(title, msg, topic_prefix, location)
 
     def _on_subscribe(
         self,

@@ -30,8 +30,15 @@ class Telegram:
 
 
 @dataclass
+class OneSignal:
+    app_id: str
+    api_key: str
+
+
+@dataclass
 class Notifications:
-    telegram: Telegram
+    telegram: Optional[Telegram]
+    onesignal: Optional[OneSignal]
 
 
 @dataclass
