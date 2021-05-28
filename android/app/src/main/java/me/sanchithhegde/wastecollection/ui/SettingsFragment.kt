@@ -22,7 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-        val locationKey = R.string.pref_location.toString()
+        val locationKey = getString(R.string.pref_location)
         val locationPreference =
             findPreference<EditTextPreference>(locationKey)
 
