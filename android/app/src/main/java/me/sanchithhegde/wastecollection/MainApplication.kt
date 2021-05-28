@@ -5,7 +5,7 @@ import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class WasteCollectionApplication : Application() {
+class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -19,6 +19,6 @@ class WasteCollectionApplication : Application() {
     }
 
     companion object {
-        lateinit var instance: WasteCollectionApplication private set
+        lateinit var instance: MainApplication private set
     }
 }

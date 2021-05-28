@@ -1,4 +1,4 @@
-package me.sanchithhegde.wastecollection
+package me.sanchithhegde.wastecollection.di
 
 import android.content.Context
 import dagger.Module

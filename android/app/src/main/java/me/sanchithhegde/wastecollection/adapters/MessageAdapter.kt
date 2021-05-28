@@ -1,4 +1,4 @@
-package me.sanchithhegde.wastecollection
+package me.sanchithhegde.wastecollection.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

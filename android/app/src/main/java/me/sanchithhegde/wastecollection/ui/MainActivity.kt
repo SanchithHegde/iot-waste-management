@@ -1,4 +1,4 @@
-package me.sanchithhegde.wastecollection
+package me.sanchithhegde.wastecollection.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
+import me.sanchithhegde.wastecollection.R
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

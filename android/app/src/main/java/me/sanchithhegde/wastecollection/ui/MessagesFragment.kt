@@ -1,4 +1,4 @@
-package me.sanchithhegde.wastecollection
+package me.sanchithhegde.wastecollection.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import dagger.hilt.android.AndroidEntryPoint
-import me.sanchithhegde.wastecollection.databinding.FragmentMainBinding
+import me.sanchithhegde.wastecollection.R
+import me.sanchithhegde.wastecollection.adapters.MessageAdapter
+import me.sanchithhegde.wastecollection.databinding.FragmentMessagesBinding
+import me.sanchithhegde.wastecollection.viewmodels.MessageViewModel
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MessagesFragment : Fragment() {
     private val viewModel: MessageViewModel by viewModels()
 
     override fun onCreateView(
@@ -22,7 +25,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentMainBinding.inflate(inflater, container, false)
+        val binding = FragmentMessagesBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
         val adapter = MessageAdapter()
