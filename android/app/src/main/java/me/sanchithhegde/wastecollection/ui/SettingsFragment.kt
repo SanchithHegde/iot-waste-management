@@ -2,7 +2,9 @@ package me.sanchithhegde.wastecollection.ui
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.onesignal.OneSignal
@@ -35,6 +37,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         OneSignal.sendTag(locationKey, newValue.toString())
                     }
                 }
+
+                true
+            }
+
+        val themeKey = getString(R.string.pref_theme)
+        val themePreference = findPreference<ListPreference>(themeKey)
+
+        themePreference?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                AppCompatDelegate.setDefaultNightMode((newValue as String).toInt())
 
                 true
             }

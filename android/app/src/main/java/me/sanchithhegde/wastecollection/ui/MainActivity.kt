@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import me.sanchithhegde.wastecollection.R
 
@@ -28,6 +30,15 @@ class MainActivity : AppCompatActivity() {
             navController,
             appBarConfiguration
         )
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val theme = sharedPreferences.getString(
+            getString(R.string.pref_theme),
+            getString(R.string.value_theme_follow_system)
+        )?.toInt()
+        theme?.let {
+            AppCompatDelegate.setDefaultNightMode(theme)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
