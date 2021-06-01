@@ -6,9 +6,9 @@ import javax.inject.Singleton
 
 @Singleton
 class MessageRepository @Inject constructor(private val messageDao: MessageDao) {
-    fun getAllMessages() = messageDao.getAllMessagesDistinctUntilChanged()
+  fun getAllMessages() = messageDao.getAllMessagesDistinctUntilChanged()
 
-    fun insertMessage(title: String, body: String) {
-        messageDao.insertMessage(MessageEntity(Instant.now().toEpochMilli(), title, body))
-    }
+  fun insertMessage(title: String, body: String) {
+    messageDao.insertMessage(MessageEntity(Instant.now().toEpochMilli(), title, body))
+  }
 }

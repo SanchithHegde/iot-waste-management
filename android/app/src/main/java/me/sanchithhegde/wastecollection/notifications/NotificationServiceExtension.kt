@@ -12,30 +12,30 @@ import me.sanchithhegde.wastecollection.data.MessageRepository
 
 class NotificationServiceExtension : OneSignal.OSRemoteNotificationReceivedHandler {
 
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface NotificationServiceExtensionEntryPoint {
-        fun messageRepository(): MessageRepository
+  @EntryPoint
+  @InstallIn(SingletonComponent::class)
+  interface NotificationServiceExtensionEntryPoint {
+    fun messageRepository(): MessageRepository
+  }
+
+  override fun remoteNotificationReceived(
+    context: Context?,
+    notificationReceivedEvent: OSNotificationReceivedEvent?
+  ) {
+    notificationReceivedEvent?.let {
+      val notification: OSNotification = notificationReceivedEvent.notification
+
+      val appContext = context?.applicationContext ?: throw IllegalStateException()
+      val hiltEntryPoint =
+        EntryPointAccessors.fromApplication(
+          appContext,
+          NotificationServiceExtensionEntryPoint::class.java
+        )
+      val messageRepository = hiltEntryPoint.messageRepository()
+
+      messageRepository.insertMessage(notification.title, notification.body)
+
+      notificationReceivedEvent.complete(notification)
     }
-
-    override fun remoteNotificationReceived(
-        context: Context?,
-        notificationReceivedEvent: OSNotificationReceivedEvent?
-    ) {
-        notificationReceivedEvent?.let {
-            val notification: OSNotification =
-                notificationReceivedEvent.notification
-
-            val appContext = context?.applicationContext ?: throw IllegalStateException()
-            val hiltEntryPoint = EntryPointAccessors.fromApplication(
-                appContext,
-                NotificationServiceExtensionEntryPoint::class.java
-            )
-            val messageRepository = hiltEntryPoint.messageRepository()
-
-            messageRepository.insertMessage(notification.title, notification.body)
-
-            notificationReceivedEvent.complete(notification)
-        }
-    }
+  }
 }

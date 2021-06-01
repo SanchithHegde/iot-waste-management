@@ -18,37 +18,35 @@ import me.sanchithhegde.wastecollection.viewmodels.MessageViewModel
 
 @AndroidEntryPoint
 class MessagesFragment : Fragment() {
-    private val viewModel: MessageViewModel by viewModels()
+  private val viewModel: MessageViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val binding = FragmentMessagesBinding.inflate(inflater, container, false)
-        context ?: return binding.root
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    val binding = FragmentMessagesBinding.inflate(inflater, container, false)
+    context ?: return binding.root
 
-        val adapter = MessageAdapter()
-        binding.messagesList.adapter = adapter
-        subscribeUi(adapter)
+    val adapter = MessageAdapter()
+    binding.messagesList.adapter = adapter
+    subscribeUi(adapter)
 
-        setHasOptionsMenu(true)
-        return binding.root
-    }
+    setHasOptionsMenu(true)
+    return binding.root
+  }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        val settingsMenuItem = menu.findItem(R.id.settingsFragment)
-        settingsMenuItem.isVisible = true
-    }
+  override fun onPrepareOptionsMenu(menu: Menu) {
+    val settingsMenuItem = menu.findItem(R.id.settingsFragment)
+    settingsMenuItem.isVisible = true
+  }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(this)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-    }
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    val navController = findNavController(this)
+    return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+  }
 
-    private fun subscribeUi(adapter: MessageAdapter) {
-        viewModel.messages.observe(viewLifecycleOwner) { messages ->
-            adapter.submitList(messages)
-        }
-    }
+  private fun subscribeUi(adapter: MessageAdapter) {
+    viewModel.messages.observe(viewLifecycleOwner) { messages -> adapter.submitList(messages) }
+  }
 }
