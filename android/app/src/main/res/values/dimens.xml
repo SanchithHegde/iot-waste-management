@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
 
     <dimen name="message_time_margin_top">16dp</dimen>
 
     <dimen name="message_card_margin_top">12dp</dimen>
     <dimen name="message_card_margin_bottom">12dp</dimen>
     <dimen name="message_card_margin_horizontal">12dp</dimen>
-    <dimen name="message_card_corner_radius">8dp</dimen>
-    <dimen name="message_card_elevation">2dp</dimen>
+    <dimen name="message_card_corner_radius">4dp</dimen>
+    <dimen name="message_card_elevation">1dp</dimen>
 
     <dimen name="message_content_padding">16dp</dimen>
     <dimen name="message_title_padding_top">0dp</dimen>
