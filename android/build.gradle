@@ -17,6 +17,7 @@ buildscript {
         hiltVersion = "2.36"
         hiltViewModelVersion = "1.0.0-alpha03"
         kotlinVersion = "1.5.10"
+        ktfmtVersion = "0.25"
         ktlintVersion = "0.38.1"
         ktxVersion = "1.5.0"
         lifecycleVersion = "2.3.1"
@@ -56,10 +57,21 @@ spotless {
     kotlin {
         encoding "UTF-8"
         target "**/*.kt"
-        ktlint(ktlintVersion).userData(["max_line_length": "100"])
+        targetExclude "**/build/"
+        ktlint(ktlintVersion).userData(["indent_size": "2", "continuation_indent_size": 2])
+        ktfmt(ktfmtVersion).googleStyle()
 
         endWithNewline()
-        indentWithSpaces(4)
+        trimTrailingWhitespace()
+    }
+
+    format "xml", {
+        encoding "UTF-8"
+        target "**/*.xml"
+        targetExclude "**/build/*", ".idea/"
+
+        endWithNewline()
+        indentWithSpaces(2)
         trimTrailingWhitespace()
     }
 }
