@@ -39,16 +39,31 @@ This will place the binary at `${CARGO_HOME}/bin`, which should be present in yo
 
 You'll need to install https://github.com/rust-embedded/cross[cross] and all of its dependencies before proceeding.
 
-You can then build the project using:
+* Note the version number for the latest stable OpenSSL release (`1.1.1k` as of writing this) by visiting https://www.openssl.org/source/[their downloads page].
+Update the line containing `local version=1.1.1k` in the `docker/openssl.sh` file to reflect the same.
 
+* Build the Docker container image:
++
+[source, shell]
+--
+docker build -f docker/arm-unknown-linux-gnueabihf.Dockerfile -t "arm-gnueabihf:$(date --iso-8601=seconds)" -t 'arm-gnueabihf:latest'
+--
++
+If you use `podman` for building the container image, just replace `docker` in the above command by `podman`.
++
+[NOTE]
+We only have the Dockerfile for the Raspberry Pi B Rev. 2, which is an ARMv6 device.
+For newer devices, you'll have to create a Dockerfile for the corresponding target architecture.
+
+* You can then build the project using:
++
 [source, shell]
 --
 cross build --release --target arm-unknown-linux-gnueabihf
 --
-
++
 [NOTE]
-The target triple will be `armv7-unknown-linux-gnueabihf` for most newer Raspberry Pi devices.
-In our case, we used a Raspberry Pi Model B Rev. 2, which is an ARMv6 device, hence the `arm-unknown-linux-gnueabihf` target triple.
+The target triple will be different for newer devices.
 
 Move the built binary to any directory present in `${PATH}` on the target machine.
 
