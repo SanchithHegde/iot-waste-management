@@ -40,7 +40,7 @@ This will place the binary at `${CARGO_HOME}/bin`, which should be present in yo
 You'll need to install https://github.com/rust-embedded/cross[cross] and all of its dependencies before proceeding.
 
 * Note the version number for the latest stable OpenSSL release (`1.1.1k` as of writing this) by visiting https://www.openssl.org/source/[their downloads page].
-Update the line containing `local version=1.1.1k` in the `docker/openssl.sh` file to reflect the same.
+Update the line containing `local version=1.1.1k` in the link:docker/openssl.sh[`docker/openssl.sh`] file to reflect the same.
 
 * Build the Docker container image:
 +
@@ -69,7 +69,8 @@ Move the built binary to any directory present in `${PATH}` on the target machin
 
 == Configuration
 
-TODO
+Almost everything can be configured using the link:config.toml[`config.toml`] file.
+It has comments explaining each option and mentions the data type and units wherever necessary.
 
 === TLS Certificates
 
@@ -77,7 +78,7 @@ TODO
 
 == Circuit Connections
 
-image::img/circuit.png[Circuit connections]
+image::img/circuit.png[Circuit connections, width=400]
 
 == Usage
 
