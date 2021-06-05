@@ -77,7 +77,7 @@ TODO
 
 == Circuit Connections
 
-TODO
+image::img/circuit.png[Circuit connections]
 
 == Usage
 
