@@ -3,7 +3,7 @@ mod mqtt_client;
 
 use std::{
     sync::Arc,
-    time::{Duration, SystemTime},
+    time::{Duration, Instant},
 };
 
 use anyhow::{Context, Result};
@@ -58,30 +58,30 @@ async fn distance(
     interval.tick().await;
     trigger_pin.set_low();
 
-    let mut start_time = SystemTime::now();
-    let mut end_time = SystemTime::now();
+    let mut start_time = Instant::now();
+    let mut end_time = Instant::now();
 
     // Save start_time
     while echo_pin.is_low() {
         // Assume sensor is disconnected if the `GPIO_ECHO` pin stays LOW for a duration more than
         // the timeout duration.
-        if start_time.duration_since(end_time)? >= timeout {
+        if end_time.elapsed() >= timeout {
             anyhow::bail!(
                 "Failed to communicate with the sensor. \
                 Please ensure a proper connection, and that the sensor works properly."
             );
         }
 
-        start_time = SystemTime::now();
+        start_time = Instant::now();
     }
 
     // Save arrival_time
     while echo_pin.is_high() {
-        end_time = SystemTime::now();
+        end_time = Instant::now();
     }
 
     // Duration between start and arrival
-    let elapsed_time = end_time.duration_since(start_time)?;
+    let elapsed_time = end_time.duration_since(start_time);
     trace!(
         "Start time: {:?}, end time: {:?}, elapsed time: {:?}",
         start_time,
