@@ -8,6 +8,9 @@ This component of the project would run on a Raspberry Pi connected to an ultras
 The basic functionality is to periodically measure the distance, which would determine how full a trash can is.
 When the distance is less than a certain threshold value, the Pi connects to an MQTT broker and publishes the current status.
 
+[link=https://asciinema.org/a/418719?size=medium]
+image::https://asciinema.org/a/418719.svg[Demo, width=500]
+
 [discrete]
 == Table of Contents
 
