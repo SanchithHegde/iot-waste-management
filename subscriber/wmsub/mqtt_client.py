@@ -112,5 +112,5 @@ class MqttClient:  # pylint:disable=too-few-public-methods
         self._client.subscribe(topic=self._topic, options=SubscribeOptions(qos=2))
 
         # Start the network loop
-        LOGGER.info("Starting loop")
+        LOGGER.info("Starting network loop")
         self._client.loop_forever()
