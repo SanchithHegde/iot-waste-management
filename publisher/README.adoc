@@ -85,6 +85,8 @@ Move the built binary to any directory present in `${PATH}` on the target machin
 == Configuration
 
 Almost everything can be configured using the link:config.toml[`config.toml`] file.
+The config file should be copied to `${XDG_CONFIG_HOME}/iot-waste-management/config.toml`.
+In case the variable `$XDG_CONFIG_HOME` is not set, the path defaults to `${HOME}/.config/iot-waste-management/config.toml`
 It has comments explaining each option and mentions the data type and units wherever necessary.
 
 === TLS Certificates
