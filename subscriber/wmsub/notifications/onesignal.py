@@ -1,10 +1,9 @@
 import logging
 
 import coloredlogs
-import requests
 from requests_futures.sessions import FuturesSession
 
-from ... import CONFIG, LOG_FORMAT, LOG_LEVEL
+from .. import CONFIG, LOG_FORMAT, LOG_LEVEL
 
 CREATE_NOTIFICATION_URL = "https://onesignal.com/api/v1/notifications"
 
@@ -18,6 +17,7 @@ coloredlogs.install(
 
 
 def push_notification(title: str, message: str, location: str):
+    # Build headers and JSON data for POST request
     headers = {
         "Content-Type": "application/json; charset=utf-8",
         "Authorization": f"Basic {CONFIG.notifications.onesignal.api_key}",
@@ -35,6 +35,7 @@ def push_notification(title: str, message: str, location: str):
         "isAndroid": is_android,
     }
 
+    # Send POST request
     session = FuturesSession()
     _response = session.post(
         CREATE_NOTIFICATION_URL,
@@ -43,3 +44,5 @@ def push_notification(title: str, message: str, location: str):
     ).result()
 
     session.close()
+
+    LOGGER.debug("Pushed a notification to OneSignal successfully")
