@@ -1,0 +1,97 @@
+= IoT Waste Management Subscriber
+:toc: macro
+:toc-title!:
+
+This is a part of our IoT waste management system project, implemented as a part of our Internet of Things course.
+This component of the project would run on a server, and push notifications to subscribed users.
+
+ifdef::env-github[]
+++++
+<p align="center">
+  <a href="https://asciinema.org/a/418723?size=medium" target="_blank">
+    <img width="500" src="https://asciinema.org/a/418723.svg" />
+  </a>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+[link=https://asciinema.org/a/418723?size=medium]
+image::https://asciinema.org/a/418723.svg[Demo, width=500, align=center]
+endif::[]
+
+[discrete]
+== Table of Contents
+
+toc::[]
+
+== Installation
+
+* You will need to have Python (3.8 or above recommended) and https://python-poetry.org/docs/[poetry] installed before you proceed further.
+
+* Clone the repository and switch to the project directory.
++
+[source, shell]
+--
+git clone https://github.com/SanchithHegde/iot-waste-mgmt-sub
+cd iot-waste-mgmt-sub
+--
+
+* Install dependencies.
++
+[source, shell]
+--
+poetry install
+--
+
+* Activate the environment.
++
+[source, shell]
+--
+poetry shell
+--
+
+== Configuration
+
+Almost everything can be configured using the link:config.toml[`config.toml`] file.
+The config file should be copied to `${XDG_CONFIG_HOME}/iot-waste-management/config.toml`.
+In case the variable `$XDG_CONFIG_HOME` is not set, the path defaults to `${HOME}/.config/iot-waste-management/config.toml`
+It has comments explaining each option and mentions the data type and units wherever necessary.
+
+While configuring TLS is optional, you *must* set up one of Telegram or OneSignal notifications.
+
+=== TLS Certificates (Optional)
+
+TODO
+
+=== Telegram Notifications (Optional)
+
+* To obtain the bot token, send a message to https://telegram.me/botfather[@BotFather] and follow the instructions there to generate a token.
+For more information, refer to https://core.telegram.org/bots#6-botfather[the Telegram docs].
+
+* To obtain the chat ID, use on of the multiple bots that provide you your chat ID.
+Alternatively, you can also search for it and find more ways to obtain the same.
+
+=== OneSignal Notifications (Optional)
+
+* Create a OneSignal account if you don't have one already.
+
+* Generate a Firebase server key.
+Refer to https://documentation.onesignal.com/docs/generate-a-google-server-api-key[the OneSignal docs] for more information.
+
+* Create a OneSignal app.
+You can then obtain the app ID and the REST API key from the OneSignal dashboard.
+For more information on how to find your app ID and API key, refer to https://documentation.onesignal.com/docs/accounts-and-keys[the docs].
+
+== Usage
+
+Run the application using the command:
+
+[source, shell]
+--
+python3 -m wmsub
+--
+
+== License
+
+link:LICENSE[MIT]
