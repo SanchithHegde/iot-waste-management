@@ -46,7 +46,7 @@ Update the line containing `local version=1.1.1k` in the link:docker/openssl.sh[
 +
 [source, shell]
 --
-docker build -f docker/arm-unknown-linux-gnueabihf.Dockerfile -t "arm-gnueabihf:$(date --iso-8601=seconds)" -t 'arm-gnueabihf:latest'
+docker build -f docker/arm-unknown-linux-gnueabihf.Dockerfile -t "arm-gnueabihf:$(date --utc +"%Y%m%d_%H%M%S")" -t 'arm-gnueabihf:latest'
 --
 +
 If you use `podman` for building the container image, just replace `docker` in the above command by `podman`.
