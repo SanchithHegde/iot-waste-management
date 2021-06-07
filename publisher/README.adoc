@@ -82,11 +82,43 @@ image::img/circuit.png[Circuit connections, width=400]
 
 == Usage
 
-TODO
+After you have configured everything using the configuration file, you can run the application using:
+
+[source, shell]
+--
+RUST_LOG=wmpub=INFO wmpub
+--
+
+Alternatively, you can omit setting the logging level and run the application using:
+
+[source, shell]
+--
+wmpub
+--
+
+in which case, only error messages (if any) are printed to the terminal.
+
+For more information on setting the logging level, refer to the <<Logging>> section below.
 
 === Logging
 
-TODO
+The `RUST_LOG` environment variable is used to set the logging level for the application, like so:
+
+[source]
+--
+RUST_LOG=wmpub=<logging_level>
+--
+
+The log level is case-insensitive, so `INFO`, `info` and `InFo` all represent the same logging level.
+Valid values for the logging level are (in increasing order of verbosity):
+
+* `ERROR`
+* `WARN`
+* `INFO`
+* `DEBUG`
+* `TRACE`
+
+If the `RUST_LOG` variable is not set, the default logging level is `ERROR`.
 
 == License
 
