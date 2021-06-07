@@ -3,6 +3,7 @@ import logging
 import coloredlogs
 import dacite
 import toml
+from platformdirs import PlatformDirs
 
 from .config import Config
 
@@ -17,5 +18,8 @@ coloredlogs.install(
 )
 
 # Load config
-CONFIG: Config = dacite.from_dict(data_class=Config, data=toml.load("config.toml"))
+dirs = PlatformDirs(appname="iot-waste-management")
+CONFIG: Config = dacite.from_dict(
+    data_class=Config, data=toml.load(f"{dirs.user_config_dir}/config.toml")
+)
 LOGGER.debug(CONFIG)
