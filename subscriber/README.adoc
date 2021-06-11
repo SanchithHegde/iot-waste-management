@@ -2,7 +2,7 @@
 :toc: macro
 :toc-title!:
 
-This is a part of our IoT waste management system project, implemented as a part of our Internet of Things course.
+This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
 This component of the project would run on a server, and push notifications to subscribed users.
 
 ifdef::env-github[]
