@@ -2,7 +2,7 @@
 :toc: macro
 :toc-title!:
 
-This is a part of our IoT waste management system project, implemented as a part of our Internet of Things course.
+This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
 This component of the project would run on a Raspberry Pi connected to an ultrasonic ranging module (the HC-SR04 in our case).
 
 The basic functionality is to periodically measure the distance, which would determine how full a trash can is.
