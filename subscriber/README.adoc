@@ -62,7 +62,9 @@ While configuring TLS is optional, you *must* set up one of Telegram or OneSigna
 
 === TLS Certificates (Optional)
 
-TODO
+Refer to https://github.com/SanchithHegde/iot-waste-management#tls-setup-optional[TLS Setup] for information on setting up TLS Certificates.
+
+Once the TLS certificates and keys are generated, make sure you update the broker URL and enable TLS options with proper paths to the certificates and keys in the configuration file.
 
 === Telegram Notifications (Optional)
 
