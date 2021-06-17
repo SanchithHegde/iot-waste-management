@@ -89,9 +89,11 @@ The config file should be copied to `${XDG_CONFIG_HOME}/iot-waste-management/con
 In case the variable `$XDG_CONFIG_HOME` is not set, the path defaults to `${HOME}/.config/iot-waste-management/config.toml`
 It has comments explaining each option and mentions the data type and units wherever necessary.
 
-=== TLS Certificates
+=== TLS Certificates (Optional)
 
-TODO
+Refer to https://github.com/SanchithHegde/iot-waste-management#tls-setup-optional[TLS Setup] for information on setting up TLS Certificates.
+
+Once the TLS certificates and keys are generated, make sure you update the broker URL and enable TLS options with proper paths to the certificates and keys in the configuration file.
 
 == Circuit Connections
 
