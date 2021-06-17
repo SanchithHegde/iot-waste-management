@@ -1,0 +1,103 @@
+= IoT Waste Management
+:toc: macro
+:toc-title!:
+
+IoT based waste management system, implemented as part of our Internet of Things course.
+
+This repository serves as the index for the whole project, with links to each of the components and bits of documentation common to multiple components.
+
+This project consists of three components:
+
+* An MQTT publisher running on a Raspberry Pi: https://github.com/SanchithHegde/iot-waste-mgmt-pub[Repository]
+* An MQTT subscriber running on a server: https://github.com/SanchithHegde/iot-waste-mgmt-sub[Repository]
+* An Android app to receive notifications: https://github.com/SanchithHegde/iot-waste-mgmt-android[Repository]
+
+[discrete]
+== Table of Contents
+
+toc::[]
+
+== Methodology
+
+The work flow of the whole system can be summarized as follows:
+
+* The Raspberry Pi connected to an HC-SR04 ultrasonic sensor, is placed in a bin, which constantly monitors the amount of trash in the bin.
+* When the bin level is beyond a certain threshold, the Pi sends a message to the MQTT broker, which is forwarded to the MQTT subscriber.
+* The subscriber processes the source of the message, and pushes a notification to the users' Android phones.
+
+== TLS Setup (Optional)
+
+If you opted to enable TLS for the MQTT broker and clients, then you'll have to generate and use certificates for the broker and clients.
+For development, https://github.com/FiloSottile/mkcert[`mkcert`] provides an easy way to generate certificates.
+
+* Generate the server certificate and key (adding hostnames/IP addresses of server(s) as required):
++
+[source, shell]
+--
+$ mkcert -cert-file ./server-cert.pem -key-file ./server-key.pem localhost 127.0.0.1 ::1
+--
+
+* Generate the client certificate and key (adding hostnames/IP addresses of server(s) as required):
++
+[source, shell]
+--
+$ mkcert -client -cert-file ./client-cert.pem -key-file ./client-key.pem localhost 127.0.0.1 ::1
+--
+
+* Copy over the CA certificates:
++
+[source, shell]
+--
+$ cp "$(mkcert -CAROOT)/rootCA.pem" ./ca.pem
+--
+
+Once you have the certificates and keys generated, update the configuration files for the MQTT broker and clients to allow them to use these certificates and keys.
+
+== Running The MQTT Broker
+
+We used the https://mosquitto.org/[`mosquitto`] MQTT broker for having maximum compatibility with the client libraries we used.
+`mosquitto` is available as a package for most Linux distributions.
+
+A simple configuration file for `mosquitto` would be:
+
+[source]
+--
+listener 18884
+
+allow_anonymous true
+--
+
+Alternatively, if you opted for using TLS, then you can use a configuration file like so:
+
+[source]
+--
+listener 18884
+
+certfile server-cert.pem
+keyfile server-key.pem
+
+require_certificate true
+
+cafile ca.pem
+
+allow_anonymous true
+--
+
+If the configuration file is saved as `mosquitto.conf`, then the broker can be started using:
+
+[source, shell]
+--
+$ mosquitto -c mosquitto.conf
+--
+
+== Running The Whole Project
+
+* Start the MQTT broker.
+* Start the MQTT subscriber.
+* Start the MQTT publisher.
+* Install the Android app ready and set the "Location" in the settings page to the same as the one used in the publisher's configuration file.
+
+== License
+
+Each of the components have been licensed under suitable licenses for their respective language ecosystems.
+Check the individual repositories for license details.
