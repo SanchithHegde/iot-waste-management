@@ -29,7 +29,7 @@ location = "XYZ Street"
 # If TLS is NOT used, then the URL should be of form: "tcp://1.2.3.4:1234".
 # If TLS is used, then the URL should be of form: "ssl://1.2.3.4:1234".
 # Data type: string.
-broker_url = "ssl://localhost:1884"
+broker_url = "tls://localhost:1884"
 
 # The first part of the topic string under which messages are published. The simplest topic prefix
 # can be the name of the city.
@@ -68,17 +68,17 @@ max_retry_interval = 60
 # Optional TLS connection settings.
 # To disable TLS for the connection, comment out the following section, including the `[mqtt.ssl]`
 # line.
-[mqtt.ssl]
+# [mqtt.ssl]
 # Path to file (file should be in PEM format) containing the public digital certificates trusted by
 # the client. In other words, this specifies the path to the CA certificates file.
 # Data type: string.
-ca_certs = "ca.pem"
+# ca_certs = "ca.pem"
 
 # Path to the file (file should be in PEM format) containing the public certificate chain of the
 # client.
 # Data type: string.
-client_certs = "client-cert.pem"
+# client_certs = "client-cert.pem"
 
 # Path to the file (file should be in PEM format) containing the client's private key.
 # Data type: string.
-client_key = "client-key.pem"
+# client_key = "client-key.pem"
