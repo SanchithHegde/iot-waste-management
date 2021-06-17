@@ -24,20 +24,20 @@ keepalive = 60
 # Optional TLS connection settings.
 # To disable TLS for the connection, comment out the following section, including the `[mqtt.ssl]`
 # line.
-[mqtt.ssl]
+# [mqtt.ssl]
 # Path to file (file should be in PEM format) containing the public digital certificates trusted by
 # the client. In other words, this specifies the path to the CA certificates file.
 # Data type: string.
-ca_certs = "ca.pem"
+# ca_certs = "ca.pem"
 
 # Path to the file (file should be in PEM format) containing the public certificate chain of the
 # client.
 # Data type: string.
-client_certs = "client-cert.pem"
+# client_certs = "client-cert.pem"
 
 # Path to the file (file should be in PEM format) containing the client's private key.
 # Data type: string.
-client_key = "client-key.pem"
+# client_key = "client-key.pem"
 
 # Optional Telegram notification settings.
 # To disable Telegram notifications, comment out the following section, including the
