@@ -42,18 +42,18 @@ keepalive = 60
 # Optional Telegram notification settings.
 # To disable Telegram notifications, comment out the following section, including the
 # `[notifications.telegram]` line.
-[notifications.telegram]
+# [notifications.telegram]
 # The Telegram bot token. Obtain this by messaging `@BotFather` on Telegram.
 # Data type: string.
-bot_token = "123456789:VeRyS3cRe7t0K3N"
+# bot_token = "123456789:VeRyS3cRe7t0K3N"
 
 # Telegram chat or channel ID to send notifications to.
 # Data type: string.
-chat_id = "-1001234567890"
+# chat_id = "-1001234567890"
 
 # Number of worker threads to use for handling Telegram notifications.
 # Data type: integer.
-workers = 4
+# workers = 4
 
 # Optional OneSignal notification settings.
 # To disable OneSignal notifications, comment out the following section, including the
