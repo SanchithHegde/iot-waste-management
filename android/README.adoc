@@ -31,6 +31,8 @@ The app is written in Kotlin and uses the following libraries/components:
 
 ** Hilt
 
+NOTE: The "Location" option in the settings page must have the same value as that provided in the configuration file of the publisher to successfully receive notifications.
+
 [discrete]
 == Table of Contents
 
