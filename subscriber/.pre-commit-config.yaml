@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 07c8812937cf75ac5bc7ceac07ef5ea383f10f2f
+    hooks:
+      - id: black
+        language_version: python3
+        name: black
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 7e43b800d29060fd44b86dc4f8ecbfc50bc4d8ee
+    hooks:
+      - id: isort
+        name: isort
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]

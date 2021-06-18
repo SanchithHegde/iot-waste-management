@@ -1,0 +1,31 @@
+[tool.poetry]
+name        = "iot-waste-mgmt-sub"
+version     = "0.1.0"
+description = ""
+authors     = [
+    "Sanchith Hegde <sanchith.hegde01@gmail.com>",
+    "Anurag Vaidya <anurag.vaidya@gmail.com>",
+]
+
+[tool.poetry.dependencies]
+python              = "^3.8"
+coloredlogs         = "^15.0"
+dacite              = "^1.6.0"
+toml                = "^0.10.2"
+paho-mqtt           = "^1.5.1"
+python-telegram-bot = "^13.5"
+requests            = "^2.25.1"
+requests-futures    = "^1.0.0"
+platformdirs = "^2.0.0-alpha.3"
+
+[tool.poetry.dev-dependencies]
+black  = { version = "^21.4b2", allow-prereleases = true }
+isort  = { version = "^5.8.0", allow-prereleases = true }
+pylint = { version = "^2.8.2", allow-prereleases = true }
+
+[build-system]
+requires      = [ "poetry-core>=1.0.0" ]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
