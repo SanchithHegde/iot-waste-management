@@ -1,0 +1,31 @@
+<resources>
+  <string name="app_name">Waste Collection</string>
+
+  <!-- Action Titles -->
+  <string name="action_settings">Settings</string>
+
+  <!-- Activity Titles-->
+  <string name="title_activity_settings">Settings</string>
+
+  <!-- Preference Titles -->
+  <string name="header_display">Display</string>
+  <string name="header_notifications">Notifications</string>
+
+  <!-- Display Preferences -->
+  <string name="title_theme">Theme</string>
+  <string name="pref_theme">theme</string>
+  <string name="entry_theme_follow_system">Follow system</string>
+  <string name="entry_theme_light">Light</string>
+  <string name="entry_theme_dark">Dark</string>
+  <string name="value_theme_follow_system">-1</string>
+  <string name="value_theme_light">1</string>
+  <string name="value_theme_dark">2</string>
+
+  <!-- Notifications Preferences -->
+  <string name="title_location">Location</string>
+  <string name="pref_location">location</string>
+
+  <!-- Location EditText Hint -->
+  <string name="hint_location">Determines the location to receive notifications for.</string>
+
+</resources>

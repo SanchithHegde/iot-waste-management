@@ -1,0 +1,25 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <PreferenceCategory app:title="@string/header_display">
+
+    <ListPreference
+      app:defaultValue="@string/value_theme_follow_system"
+      app:entries="@array/list_entries_theme"
+      app:entryValues="@array/list_values_theme"
+      app:key="@string/pref_theme"
+      app:title="@string/title_theme"
+      app:useSimpleSummaryProvider="true" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory app:title="@string/header_notifications">
+
+    <EditTextPreference
+      app:dialogMessage="@string/hint_location"
+      app:key="@string/pref_location"
+      app:title="@string/title_location"
+      app:useSimpleSummaryProvider="true" />
+
+  </PreferenceCategory>
+
+</PreferenceScreen>
