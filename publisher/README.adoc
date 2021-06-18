@@ -1,0 +1,158 @@
+= IoT Waste Management Publisher
+:toc: macro
+:toc-title!:
+
+This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
+This component of the project would run on a Raspberry Pi connected to an ultrasonic ranging module (the HC-SR04 in our case).
+
+The basic functionality is to periodically measure the distance, which would determine how full a trash can is.
+When the distance is less than a certain threshold value, the Pi connects to an MQTT broker and publishes the current status.
+
+ifdef::env-github[]
+++++
+<p align="center">
+  <a href="https://asciinema.org/a/418719?size=medium" target="_blank">
+    <img width="500" src="https://asciinema.org/a/418719.svg" />
+  </a>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+[link=https://asciinema.org/a/418719?size=medium]
+image::https://asciinema.org/a/418719.svg[Demo, width=500, align=center]
+endif::[]
+
+[discrete]
+== Table of Contents
+
+toc::[]
+
+== Installation
+
+You can either choose to compile it on the target machine (a Raspberry Pi), or to cross compile on a more powerful machine and install it on the target machine.
+We'd recommend cross compiling it if the target device has less than 4 GB RAM.
+
+=== Build From Source
+
+To build this project from source *on the target machine (the Pi)*, you need to have Rust installed.
+The *nightly toolchain* is required to build this project.
+Refer to https://www.rust-lang.org/tools/install[the docs] for more information on installing Rust.
+
+You can then use cargo to build everything:
+
+[source, shell]
+--
+git clone https://github.com/SanchithHegde/iot-waste-mgmt-pub
+cd iot-waste-mgmt-pub
+cargo install --path .
+--
+
+This will place the binary at `${CARGO_HOME}/bin`, which should be present in your `${PATH}` to run the binary.
+
+=== Cross Compilation
+
+You'll need to install https://github.com/rust-embedded/cross[cross] and all of its dependencies before proceeding.
+
+* Note the version number for the latest stable OpenSSL release (`1.1.1k` as of writing this) by visiting https://www.openssl.org/source/[their downloads page].
+Update the line containing `local version=1.1.1k` in the link:docker/openssl.sh[`docker/openssl.sh`] file to reflect the same.
+
+* Build the Docker container image:
++
+[source, shell]
+--
+docker build -f docker/arm-unknown-linux-gnueabihf.Dockerfile -t "arm-gnueabihf:$(date --utc +"%Y%m%d_%H%M%S")" -t 'arm-gnueabihf:latest'
+--
++
+If you use `podman` for building the container image, just replace `docker` in the above command by `podman`.
++
+[NOTE]
+We only have the Dockerfile for the Raspberry Pi B Rev. 2, which is an ARMv6 device.
+For newer devices, you'll have to create a Dockerfile for the corresponding target architecture.
+
+* You can then build the project using:
++
+[source, shell]
+--
+cross build --release --target arm-unknown-linux-gnueabihf
+--
++
+[NOTE]
+The target triple will be different for newer devices.
+
+Move the built binary to any directory present in `${PATH}` on the target machine.
+
+== Configuration
+
+Almost everything can be configured using the link:config.toml[`config.toml`] file.
+The config file should be copied to `${XDG_CONFIG_HOME}/iot-waste-management/config.toml`.
+In case the variable `$XDG_CONFIG_HOME` is not set, the path defaults to `${HOME}/.config/iot-waste-management/config.toml`
+It has comments explaining each option and mentions the data type and units wherever necessary.
+
+=== TLS Certificates (Optional)
+
+Refer to https://github.com/SanchithHegde/iot-waste-management#tls-setup-optional[TLS Setup] for information on setting up TLS Certificates.
+
+Once the TLS certificates and keys are generated, make sure you update the broker URL and enable TLS options with proper paths to the certificates and keys in the configuration file.
+
+== Circuit Connections
+
+ifdef::env-github[]
+++++
+<p align="center">
+  <a href="https://github.com/SanchithHegde/iot-waste-mgmt-pub/blob/main/img/circuit.png" target="_blank">
+    <img width="400" src="https://github.com/SanchithHegde/iot-waste-mgmt-pub/raw/main/img/circuit.png" />
+  </a>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
+image::img/circuit.png[Circuit connections, width=400, align=center]
+endif::[]
+
+== Usage
+
+After you have configured everything using the configuration file, you can run the application using:
+
+[source, shell]
+--
+RUST_LOG=wmpub=INFO wmpub
+--
+
+Alternatively, you can omit setting the logging level and run the application using:
+
+[source, shell]
+--
+wmpub
+--
+
+in which case, only error messages (if any) are printed to the terminal.
+
+For more information on setting the logging level, refer to the <<Logging>> section below.
+
+=== Logging
+
+The `RUST_LOG` environment variable is used to set the logging level for the application, like so:
+
+[source]
+--
+RUST_LOG=wmpub=<logging_level>
+--
+
+The log level is case-insensitive, so `INFO`, `info` and `InFo` all represent the same logging level.
+Valid values for the logging level are (in increasing order of verbosity):
+
+* `ERROR`
+* `WARN`
+* `INFO`
+* `DEBUG`
+* `TRACE`
+
+If the `RUST_LOG` variable is not set, the default logging level is `ERROR`.
+
+== License
+
+Dual licensed under Apache 2.0 or MIT at your option.
+
+See the link:LICENSE-APACHE[] and link:LICENSE-MIT[] files for license details.

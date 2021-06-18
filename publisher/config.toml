@@ -1,0 +1,84 @@
+# The bin is considered full when the measured distance is equal to or lesser than this distance.
+# Unit: centimeters.
+threshold_distance = 10
+
+# Defines the time period for the distance measurement. The distance measurement happens every
+# `delay` number of seconds.
+# Unit: seconds.
+delay = 5
+
+# The distance sensor is assumed to be not connected if the time to take a measurement takes longer
+# than `measurement_timeout` number of milliseconds.
+# 50 ms should be a sufficient enough time. There's no need to change this.
+# Unit: milliseconds.
+measurement_timeout = 50
+
+[machine]
+# The unique identifier for this machine. Used to identify the source of the message.
+# Data type: string.
+id = "123456789"
+
+# The location where the machine is placed. This is a part of the final topic under which messages
+# are published by this machine. This is also directly a part of the message content that reaches
+# the users, so keep this sensible.
+# Data type: string.
+location = "XYZ Street"
+
+[mqtt]
+# The IP address or domain name, and the port number of the MQTT broker.
+# If TLS is NOT used, then the URL should be of form: "tcp://1.2.3.4:1234".
+# If TLS is used, then the URL should be of form: "ssl://1.2.3.4:1234".
+# Data type: string.
+broker_url = "tls://localhost:1884"
+
+# The first part of the topic string under which messages are published. The simplest topic prefix
+# can be the name of the city.
+# Data type: string.
+topic_prefix = "ABC City"
+
+# The client has limited support for buffering messages when the client is temporarily disconnected.
+# This specifies the maximum number of messages that can be buffered for delivery when the client is
+# offline.
+# Data type: integer.
+buffer_size = 10
+
+# Specifies the keep alive interval for the client session. This is the maximum time that should
+# pass without communication between the client and server.
+# Data type: integer.
+# Unit: seconds.
+keep_alive_interval = 60
+
+# Specifies the time interval to allow the connect to complete.
+# Data type: integer.
+# Unit: seconds.
+connect_timeout = 30
+
+# The minimum retry interval to try to reconnect if the connection is lost. This interval is doubled
+# on each failed retry.
+# Data type: integer.
+# Unit: seconds.
+min_retry_interval = 5
+
+# The minimum retry interval to try to reconnect if the connection is lost. Doubling stops here on
+# failed retries.
+# Data type: integer.
+# Unit: seconds.
+max_retry_interval = 60
+
+# Optional TLS connection settings.
+# To disable TLS for the connection, comment out the following section, including the `[mqtt.ssl]`
+# line.
+# [mqtt.ssl]
+# Path to file (file should be in PEM format) containing the public digital certificates trusted by
+# the client. In other words, this specifies the path to the CA certificates file.
+# Data type: string.
+# ca_certs = "ca.pem"
+
+# Path to the file (file should be in PEM format) containing the public certificate chain of the
+# client.
+# Data type: string.
+# client_certs = "client-cert.pem"
+
+# Path to the file (file should be in PEM format) containing the client's private key.
+# Data type: string.
+# client_key = "client-key.pem"

@@ -1,0 +1,10 @@
+{
+  "rust-analyzer.cargo.target": "arm-unknown-linux-gnueabihf",
+  "rust-analyzer.checkOnSave.allTargets": true,
+
+  "[rust]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
+}
