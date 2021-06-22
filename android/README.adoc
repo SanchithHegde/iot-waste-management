@@ -3,8 +3,7 @@
 :toc-title!:
 :figure-caption!:
 
-This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
-The app receives (and stores) push notifications when the dustbin is full.
+This app receives (and stores) push notifications when the dustbin is full.
 
 The app uses https://onesignal.com[OneSignal] for receiving notifications.
 The app is written in Kotlin and uses the following libraries/components:
