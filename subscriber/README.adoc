@@ -2,7 +2,6 @@
 :toc: macro
 :toc-title!:
 
-This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
 This component of the project would run on a server, and push notifications to subscribed users.
 
 ifdef::env-github[]
@@ -33,8 +32,8 @@ toc::[]
 +
 [source, shell]
 --
-git clone https://github.com/SanchithHegde/iot-waste-mgmt-sub
-cd iot-waste-mgmt-sub
+git clone https://github.com/SanchithHegde/iot-waste-management
+cd iot-waste-management/subscriber
 --
 
 * Install dependencies.
