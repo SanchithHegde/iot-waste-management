@@ -4,13 +4,11 @@
 
 IoT based waste management system, implemented as part of our Internet of Things course.
 
-This repository serves as the index for the whole project, with links to each of the components and bits of documentation common to multiple components.
-
 This project consists of three components:
 
-* An MQTT publisher running on a Raspberry Pi: https://github.com/SanchithHegde/iot-waste-mgmt-pub[Repository]
-* An MQTT subscriber running on a server: https://github.com/SanchithHegde/iot-waste-mgmt-sub[Repository]
-* An Android app to receive notifications: https://github.com/SanchithHegde/iot-waste-mgmt-android[Repository]
+* An MQTT publisher running on a Raspberry Pi: link:publisher[publisher] subdirectory.
+* An MQTT subscriber running on a server: link:subscriber[subscriber] subdirectory.
+* An Android app to receive notifications: link:android[android] subdirectory.
 
 [discrete]
 == Table of Contents
