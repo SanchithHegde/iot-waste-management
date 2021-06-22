@@ -2,7 +2,6 @@
 :toc: macro
 :toc-title!:
 
-This is a part of our https://github.com/SanchithHegde/iot-waste-management[IoT waste management system] project, implemented as a part of our Internet of Things course.
 This component of the project would run on a Raspberry Pi connected to an ultrasonic ranging module (the HC-SR04 in our case).
 
 The basic functionality is to periodically measure the distance, which would determine how full a trash can is.
@@ -43,8 +42,8 @@ You can then use cargo to build everything:
 
 [source, shell]
 --
-git clone https://github.com/SanchithHegde/iot-waste-mgmt-pub
-cd iot-waste-mgmt-pub
+git clone https://github.com/SanchithHegde/iot-waste-management
+cd iot-waste-management/publisher
 cargo install --path .
 --
 
@@ -100,8 +99,8 @@ Once the TLS certificates and keys are generated, make sure you update the broke
 ifdef::env-github[]
 ++++
 <p align="center">
-  <a href="https://github.com/SanchithHegde/iot-waste-mgmt-pub/blob/main/img/circuit.png" target="_blank">
-    <img width="400" src="https://github.com/SanchithHegde/iot-waste-mgmt-pub/raw/main/img/circuit.png" />
+  <a href="https://github.com/SanchithHegde/iot-waste-management/blob/main/publisher/img/circuit.png" target="_blank">
+    <img width="400" src="https://github.com/SanchithHegde/iot-waste-management/raw/main/publisher/img/circuit.png" />
   </a>
 </p>
 ++++
