@@ -99,8 +99,8 @@ Once the TLS certificates and keys are generated, make sure you update the broke
 ifdef::env-github[]
 ++++
 <p align="center">
-  <a href="https://github.com/SanchithHegde/iot-waste-management/blob/main/publisher/img/circuit.png" target="_blank">
-    <img width="400" src="https://github.com/SanchithHegde/iot-waste-management/raw/main/publisher/img/circuit.png" />
+  <a href="img/circuit.png" target="_blank">
+    <img width="400" src="img/circuit.png" />
   </a>
 </p>
 ++++
