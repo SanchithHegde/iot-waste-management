@@ -98,4 +98,4 @@ $ mosquitto -c mosquitto.conf
 == License
 
 Each of the components have been licensed under suitable licenses for their respective language ecosystems.
-Check the individual repositories for license details.
+Check the individual subdirectories for license details.
