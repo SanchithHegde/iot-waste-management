@@ -4,7 +4,7 @@ plugins {
   id("kotlin-android")
   id("kotlin-kapt")
   id("dagger.hilt.android.plugin")
-  id("com.google.secrets_gradle_plugin") version "0.6"
+  id("com.google.secrets_gradle_plugin")
 }
 
 android {
