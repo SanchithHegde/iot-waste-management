@@ -1,0 +1,39 @@
+# Centralized versions for dependencies that share versions
+[versions]
+hilt = "_"
+kotlin = "_"
+lifecycle = "_"
+navigation = "_"
+room = "_"
+
+[libraries]
+# buildscript dependencies
+androidGradlePlugin = "com.android.tools.build:gradle:_"
+hiltGradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+onesignalGradlePlugin = "gradle.plugin.com.onesignal:onesignal-gradle-plugin:_"
+spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:_"
+
+# AndroidX dependencies
+androidx-appcompat = "androidx.appcompat:appcompat:_"
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:_"
+androidx-core-ktx = "androidx.core:core-ktx:_"
+androidx-lifecycle-livedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-material = "com.google.android.material:material:_"
+androidx-navigation-fragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-uiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-preferenceKtx = "androidx.preference:preference-ktx:_"
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+
+# Dagger/Hilt dependencies
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+# Third-party dependencies
+onesignal = "com.onesignal:OneSignal:_"
+
+# Bundles of dependencies usually used together so they can be included in one go
+# [bundles]

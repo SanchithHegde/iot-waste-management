@@ -42,23 +42,22 @@ android {
 }
 
 dependencies {
-  implementation(AndroidX.appCompat)
-  implementation(AndroidX.constraintLayout)
-  implementation(AndroidX.core.ktx)
-  implementation(AndroidX.hilt.lifecycleViewModel)
-  implementation(AndroidX.lifecycle.viewModelKtx)
-  implementation(AndroidX.lifecycle.liveDataKtx)
-  implementation(AndroidX.navigation.fragmentKtx)
-  implementation(AndroidX.navigation.uiKtx)
-  implementation(AndroidX.preferenceKtx)
-  implementation(AndroidX.room.runtime)
-  implementation(AndroidX.room.ktx)
-  implementation(Google.android.material)
-  implementation(Google.dagger.hilt.android)
-  implementation("com.onesignal:OneSignal:_")
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.lifecycle.viewmodelKtx)
+  implementation(libs.androidx.lifecycle.livedataKtx)
+  implementation(libs.androidx.navigation.fragmentKtx)
+  implementation(libs.androidx.material)
+  implementation(libs.androidx.navigation.uiKtx)
+  implementation(libs.androidx.preferenceKtx)
+  implementation(libs.androidx.room.runtime)
+  implementation(libs.androidx.room.ktx)
+  implementation(libs.dagger.hilt.android)
+  implementation(libs.onesignal)
 
-  kapt(AndroidX.room.compiler)
-  kapt(Google.dagger.hilt.compiler)
+  kapt(libs.androidx.room.compiler)
+  kapt(libs.dagger.hilt.compiler)
 }
 
 secrets {

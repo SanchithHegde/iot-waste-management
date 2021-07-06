@@ -1,3 +1,5 @@
+enableFeaturePreview("VERSION_CATALOGS")
+
 pluginManagement {
   repositories {
     gradlePluginPortal()
@@ -16,5 +18,5 @@ refreshVersions {
   extraArtifactVersionKeyRules(file("refreshVersions-extra-rules.txt"))
 }
 
-rootProject.name = "Waste Collection"
+rootProject.name = "WasteCollection"
 include(":app")
