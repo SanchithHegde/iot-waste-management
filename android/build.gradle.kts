@@ -9,10 +9,10 @@ buildscript {
     val libs = project.extensions.getByType<VersionCatalogsExtension>()
       .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
 
-    classpath(libs.androidGradlePlugin)
-    classpath(libs.hiltGradlePlugin)
-    classpath(libs.kotlinGradlePlugin)
-    classpath(libs.onesignalGradlePlugin)
+    classpath(libs.plugin.gradle.android)
+    classpath(libs.plugin.gradle.hilt)
+    classpath(libs.plugin.gradle.kotlin)
+    classpath(libs.plugin.gradle.onesignal)
   }
 }
 

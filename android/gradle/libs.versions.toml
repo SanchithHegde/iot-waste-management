@@ -8,11 +8,11 @@ room = "_"
 
 [libraries]
 # buildscript dependencies
-androidGradlePlugin = "com.android.tools.build:gradle:_"
-hiltGradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
-kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-onesignalGradlePlugin = "gradle.plugin.com.onesignal:onesignal-gradle-plugin:_"
-spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:_"
+plugin-gradle-android = "com.android.tools.build:gradle:_"
+plugin-gradle-hilt = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+plugin-gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-gradle-onesignal = "gradle.plugin.com.onesignal:onesignal-gradle-plugin:_"
+plugin-gradle-spotless = "com.diffplug.spotless:spotless-plugin-gradle:_"
 
 # AndroidX dependencies
 androidx-appcompat = "androidx.appcompat:appcompat:_"
