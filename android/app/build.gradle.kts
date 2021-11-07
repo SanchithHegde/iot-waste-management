@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-  compileSdk = 30
+  compileSdk = 31
   buildToolsVersion = "30.0.3"
 
   defaultConfig {
     applicationId = "me.sanchithhegde.wastecollection"
     minSdk = 26
-    targetSdk = 30
+    targetSdk = 31
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     versionCode = 1
     versionName = "1.0"
