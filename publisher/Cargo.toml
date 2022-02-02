@@ -7,18 +7,18 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow            = "1.0.52"
+anyhow            = "1.0.53"
 directories       = "4.0.1"
 futures           = "0.3.19"
 log               = "0.4.14"
-paho-mqtt         = "0.9.1"
+paho-mqtt         = "0.10.0"
 pretty_env_logger = "0.4.0"
 rppal             = "0.13.1"
-serde             = "1.0.133"
-serde_derive      = "1.0.133"
+serde             = "1.0.136"
+serde_derive      = "1.0.136"
 signal-hook       = "0.3.13"
-signal-hook-tokio = { version = "0.3.0", features = [ "futures-v0_3" ] }
-tokio             = { version = "1.15.0", features = [ "macros", "rt-multi-thread", "time" ] }
+signal-hook-tokio = { version = "0.3.1", features = [ "futures-v0_3" ] }
+tokio             = { version = "1.16.1", features = [ "macros", "rt-multi-thread", "time" ] }
 toml              = "0.5.8"
 
 [[bin]]
