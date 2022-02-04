@@ -6,9 +6,6 @@ buildscript {
   }
 
   dependencies {
-    val libs = project.extensions.getByType<VersionCatalogsExtension>()
-      .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
-
     classpath(libs.plugin.gradle.android)
     classpath(libs.plugin.gradle.hilt)
     classpath(libs.plugin.gradle.kotlin)
