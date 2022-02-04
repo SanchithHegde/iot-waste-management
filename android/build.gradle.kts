@@ -13,6 +13,7 @@ buildscript {
     classpath(libs.plugin.gradle.hilt)
     classpath(libs.plugin.gradle.kotlin)
     classpath(libs.plugin.gradle.onesignal)
+    classpath(libs.plugin.gradle.secrets)
   }
 }
 
