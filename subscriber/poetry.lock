@@ -260,7 +260,7 @@ python-versions = "*"
 
 [[package]]
 name = "python-telegram-bot"
-version = "13.10"
+version = "13.11"
 description = "We have made you a wrapper you can't refuse"
 category = "main"
 optional = false
@@ -556,8 +556,8 @@ pyreadline3 = [
     {file = "pyreadline3-3.4.1.tar.gz", hash = "sha256:6f3d1f7b8a31ba32b73917cefc1f28cc660562f39aea8646d30bd6eff21f7bae"},
 ]
 python-telegram-bot = [
-    {file = "python-telegram-bot-13.10.tar.gz", hash = "sha256:d2c555431821f4ace0c1b7ce12af41999f01b793b275dee131f1034d08c01e3e"},
-    {file = "python_telegram_bot-13.10-py3-none-any.whl", hash = "sha256:833f39110f5d019b39a6c6fcbabd6ea1627eaaa0a26e618c0be099568672d791"},
+    {file = "python-telegram-bot-13.11.tar.gz", hash = "sha256:baeff704baa2ac3dc17a944c02da888228ad258e89be2e5bcbd13a8a5102d573"},
+    {file = "python_telegram_bot-13.11-py3-none-any.whl", hash = "sha256:534f5bb0ff4ca34c9252e97e0b3bcdab81d97be0eb4821682a361cb426c00e55"},
 ]
 pytz = [
     {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},
