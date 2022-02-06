@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 anyhow            = "1.0.53"
 directories       = "4.0.1"
-futures           = "0.3.19"
+futures           = "0.3.21"
 log               = "0.4.14"
 paho-mqtt         = "0.10.0"
 pretty_env_logger = "0.4.0"
