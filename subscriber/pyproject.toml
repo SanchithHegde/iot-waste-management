@@ -16,7 +16,7 @@ paho-mqtt           = "^1.5.1"
 python-telegram-bot = "^13.5"
 requests            = "^2.25.1"
 requests-futures    = "^1.0.0"
-platformdirs = "^2.5.0"
+platformdirs = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
 black  = { version = "^22.1", allow-prereleases = true }
