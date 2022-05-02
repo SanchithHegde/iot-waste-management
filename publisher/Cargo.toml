@@ -15,7 +15,7 @@ paho-mqtt         = "0.11.0"
 pretty_env_logger = "0.4.0"
 rppal             = "0.13.1"
 serde             = "1.0.137"
-serde_derive      = "1.0.136"
+serde_derive      = "1.0.137"
 signal-hook       = "0.3.13"
 signal-hook-tokio = { version = "0.3.1", features = [ "futures-v0_3" ] }
 tokio             = { version = "1.18.0", features = [ "macros", "rt-multi-thread", "time" ] }
