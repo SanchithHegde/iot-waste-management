@@ -21,7 +21,7 @@ platformdirs = "^2.5.2"
 [tool.poetry.dev-dependencies]
 black  = { version = "^22.3", allow-prereleases = true }
 isort  = { version = "^5.8.0", allow-prereleases = true }
-pylint = { version = "^2.14.2", allow-prereleases = true }
+pylint = { version = "^2.14.3", allow-prereleases = true }
 
 [build-system]
 requires      = [ "poetry-core>=1.0.0" ]
